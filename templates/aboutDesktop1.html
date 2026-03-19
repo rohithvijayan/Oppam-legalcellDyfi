@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>ഞങ്ങളെക്കുറിച്ച് | Modern Solidarity</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@400;700;800&amp;family=Inter:wght@300;400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-container": "#fffbff",
+                        "surface-variant": "#e2e2e2",
+                        "tertiary-container": "#6c748b",
+                        "surface-container-high": "#e8e8e8",
+                        "on-tertiary-fixed": "#131b2e",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eeeeee",
+                        "outline": "#8f6f6e",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-background": "#1a1c1c",
+                        "primary-fixed": "#ffdad8",
+                        "on-surface": "#1a1c1c",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#ffb3b1",
+                        "secondary-container": "#fd5c5b",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2f3131",
+                        "error": "#ba1a1a",
+                        "background": "#f9f9f9",
+                        "primary-container": "#db313f",
+                        "secondary-fixed-dim": "#ffb3af",
+                        "primary-fixed-dim": "#ffb3b1",
+                        "on-primary-fixed-variant": "#92001c",
+                        "on-secondary-fixed-variant": "#910618",
+                        "outline-variant": "#e4bebc",
+                        "on-secondary-fixed": "#410005",
+                        "error-container": "#ffdad6",
+                        "surface": "#f9f9f9",
+                        "secondary": "#b4262d",
+                        "surface-tint": "#bb152c",
+                        "tertiary-fixed": "#dae2fd",
+                        "primary": "#b7102a",
+                        "tertiary": "#545c72",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-bright": "#f9f9f9",
+                        "secondary-fixed": "#ffdad7",
+                        "on-tertiary-container": "#fefcff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-secondary-container": "#60000b",
+                        "surface-dim": "#dadada",
+                        "on-surface-variant": "#5b403f",
+                        "on-primary-fixed": "#410007"
+                    },
+                    fontFamily: {
+                        "headline": ["Noto Serif Malayalam", "serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .crimson-gradient-text {
+            background: linear-gradient(135deg, #b7102a 0%, #db313f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: minmax(280px, auto);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hover-scale {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+    <!-- Top Navigation Bar -->
+    <nav class="fixed top-0 w-full z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md shadow-sm">
+        <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+            <div class="text-2xl font-headline font-bold text-red-700 dark:text-red-500">
+                Modern Solidarity
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-slate-600 dark:text-slate-400 hover:text-red-600 transition-colors" href="#">Home</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-red-600 transition-colors" href="#">Services</a>
+                <a class="text-red-700 dark:text-red-400 font-bold border-b-2 border-red-700" href="#">About Us</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-red-600 transition-colors" href="#">Case
+                    Studies</a>
+            </div>
+            <button
+                class="bg-primary-container text-on-primary-container px-6 py-2.5 rounded-full font-medium hover:opacity-90 transition-all">
+                Get Legal Aid
+            </button>
+        </div>
+    </nav>
+    <main class="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+        <!-- Header Section -->
+        <header class="text-center mb-24">
+            <h1 class="font-headline text-6xl md:text-8xl font-extrabold crimson-gradient-text tracking-tight mb-6">
+                ഞങ്ങളെക്കുറിച്ച്
+            </h1>
+            <p class="text-xl md:text-2xl text-tertiary max-w-2xl mx-auto leading-relaxed font-light">
+                നീതിയും കരുണയും കൈകോർക്കുന്ന ഒരു ആധുനിക നിയമ സഹായ വേദി.
+            </p>
+        </header>
+        <!-- Bento Grid Layout -->
+        <div class="bento-grid">
+            <!-- Card 1: Mission (Spans 2 columns) -->
+            <div
+                class="md:col-span-2 glass-card rounded-xl p-10 flex flex-col justify-between shadow-sm hover-scale border-t-4 border-primary">
+                <div>
+                    <span class="text-primary font-bold tracking-widest text-xs uppercase mb-6 block">OUR MISSION</span>
+                    <h2 class="font-headline text-4xl text-on-surface mb-6 leading-tight">സാമൂഹിക നീതിക്കായുള്ള ഒരു
+                        പുതിയ പോരാട്ടം.</h2>
+                    <p class="text-lg text-tertiary leading-relaxed max-w-2xl">
+                        നിയമപരമായ അവകാശങ്ങൾ ഓരോ പൗരന്റെയും മൗലികാവകാശമാണ്. അത് നിഷേധിക്കപ്പെടുന്നിടത്ത് ഞങ്ങൾ
+                        സാന്നിധ്യമാകുന്നു. ആധുനിക സാങ്കേതികവിദ്യയും നിയമ വൈദഗ്ധ്യവും ഉപയോഗിച്ച് സാധാരണക്കാരന്റെ
+                        ശബ്ദമാവുക എന്നതാണ് ഞങ്ങളുടെ ലക്ഷ്യം.
+                    </p>
+                </div>
+                <div class="mt-8 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">gavel</span>
+                    </div>
+                    <span class="font-semibold text-on-surface">നിയമപരമായ കരുത്ത്, സാമൂഹിക പ്രതിബദ്ധത</span>
+                </div>
+            </div>
+            <!-- Card 2: Privacy (Tall) -->
+            <div
+                class="glass-card rounded-xl p-10 flex flex-col items-center justify-center text-center shadow-sm hover-scale row-span-2">
+                <div class="relative mb-10">
+                    <div class="absolute -inset-4 bg-primary/10 blur-2xl rounded-full"></div>
+                    <span class="material-symbols-outlined text-8xl text-primary relative"
+                        style="font-variation-settings: 'FILL' 1;">shield_person</span>
+                </div>
+                <h3 class="font-headline text-2xl mb-4">സുരക്ഷിതം &amp; സ്വകാര്യം</h3>
+                <p class="text-tertiary mb-8">നിങ്ങളുടെ വിവരങ്ങളും പരാതികളും പൂർണ്ണമായും സുരക്ഷിതമാണ്. എൻഡ്-ടു-എൻഡ്
+                    എൻക്രിപ്ഷൻ ഉപയോഗിച്ച് ഞങ്ങൾ നിങ്ങളുടെ സ്വകാര്യത ഉറപ്പാക്കുന്നു.</p>
+                <button
+                    class="w-full py-4 rounded-full border border-outline-variant/30 text-primary font-bold hover:bg-primary/5 transition-colors">
+                    Privacy Policy
+                </button>
+            </div>
+            <!-- Card 3: Solidarity/Partners (Wide) -->
+            <div
+                class="md:col-span-2 glass-card rounded-xl p-10 shadow-sm hover-scale flex flex-col md:flex-row items-center gap-12 bg-gradient-to-br from-white to-surface-container-low">
+                <div class="flex-1">
+                    <span class="text-primary font-bold tracking-widest text-xs uppercase mb-4 block">NETWORK</span>
+                    <h3 class="font-headline text-3xl mb-4">ഐക്യദാർഢ്യം</h3>
+                    <p class="text-tertiary leading-relaxed">
+                        AILU (അഖിലേന്ത്യാ അഭിഭാഷക യൂണിയൻ), DYFI തുടങ്ങിയ പ്രസ്ഥാനങ്ങളുമായി ചേർന്ന്
+                        താഴെത്തട്ടിലുള്ളവർക്ക് നിയമസഹായം എത്തിക്കാൻ ഞങ്ങൾ പ്രതിജ്ഞാബദ്ധരാണ്.
+                    </p>
+                </div>
+                <div class="flex gap-6 shrink-0">
+                    <div class="w-24 h-24 rounded-2xl bg-white shadow-md flex flex-col items-center justify-center p-4">
+                        <span class="text-red-600 font-black text-2xl">AILU</span>
+                        <span class="text-[10px] text-slate-400 uppercase tracking-tighter">Advocates</span>
+                    </div>
+                    <div
+                        class="w-24 h-24 rounded-2xl bg-primary shadow-lg flex flex-col items-center justify-center p-4">
+                        <span class="text-white font-black text-2xl">DYFI</span>
+                        <span class="text-[10px] text-white/70 uppercase tracking-tighter">Solidarity</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 4: Action/Contact (Small) -->
+            <div class="glass-card rounded-xl p-8 shadow-sm hover-scale flex flex-col justify-between">
+                <span class="material-symbols-outlined text-primary text-4xl">contact_support</span>
+                <div>
+                    <h4 class="font-bold text-lg mb-2">സഹായം വേണോ?</h4>
+                    <p class="text-sm text-tertiary">ഞങ്ങളുടെ ടീമുമായി നേരിട്ട് ബന്ധപ്പെടുക.</p>
+                </div>
+                <a class="text-primary font-bold inline-flex items-center gap-2 group" href="#">
+                    ബന്ധപ്പെടുക <span
+                        class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+            <!-- Card 5: Pro Bono (Small) -->
+            <div
+                class="glass-card rounded-xl p-8 shadow-sm hover-scale flex flex-col justify-between bg-surface-container-lowest">
+                <span class="material-symbols-outlined text-primary text-4xl">volunteer_activism</span>
+                <div>
+                    <h4 class="font-bold text-lg mb-2">സൗജന്യ സേവനം</h4>
+                    <p class="text-sm text-tertiary">അർഹരായവർക്ക് പ്രോ-ബോണോ സേവനങ്ങളും ലഭ്യമാണ്.</p>
+                </div>
+                <span class="text-xs font-bold text-tertiary-container uppercase">Apply Now</span>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full mt-20 bg-slate-100 dark:bg-slate-900">
+        <div
+            class="w-full py-12 px-8 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-slate-200/50 dark:border-slate-800/50 max-w-7xl mx-auto">
+            <div class="flex flex-col items-center md:items-start gap-2">
+                <span class="font-headline font-bold text-red-700 text-xl">Modern Solidarity</span>
+                <p class="font-body text-sm text-slate-600 dark:text-slate-400 text-center md:text-left">
+                    © 2024 Modern Solidarity Legal Aid. Protective. Professional. Empathetic.
+                </p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a class="text-slate-500 hover:text-red-600 hover:underline decoration-red-500/30 transition-opacity opacity-80 hover:opacity-100 text-sm"
+                    href="#">Privacy Policy</a>
+                <a class="text-slate-500 hover:text-red-600 hover:underline decoration-red-500/30 transition-opacity opacity-80 hover:opacity-100 text-sm"
+                    href="#">Terms of Service</a>
+                <a class="text-slate-500 hover:text-red-600 hover:underline decoration-red-500/30 transition-opacity opacity-80 hover:opacity-100 text-sm"
+                    href="#">Contact Support</a>
+                <a class="text-slate-500 hover:text-red-600 hover:underline decoration-red-500/30 transition-opacity opacity-80 hover:opacity-100 text-sm"
+                    href="#">Pro Bono Partners</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

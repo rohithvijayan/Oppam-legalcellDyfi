@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>About Us - Modern Solidarity</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Serif:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-container": "#fffbff",
+                        "surface-variant": "#e2e2e2",
+                        "tertiary-container": "#6c748b",
+                        "surface-container-high": "#e8e8e8",
+                        "on-tertiary-fixed": "#131b2e",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eeeeee",
+                        "outline": "#8f6f6e",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-background": "#1a1c1c",
+                        "primary-fixed": "#ffdad8",
+                        "on-surface": "#1a1c1c",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#ffb3b1",
+                        "secondary-container": "#fd5c5b",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2f3131",
+                        "error": "#ba1a1a",
+                        "background": "#f9f9f9",
+                        "primary-container": "#db313f",
+                        "secondary-fixed-dim": "#ffb3af",
+                        "primary-fixed-dim": "#ffb3b1",
+                        "on-primary-fixed-variant": "#92001c",
+                        "on-secondary-fixed-variant": "#910618",
+                        "outline-variant": "#e4bebc",
+                        "on-secondary-fixed": "#410005",
+                        "error-container": "#ffdad6",
+                        "surface": "#f9f9f9",
+                        "secondary": "#b4262d",
+                        "surface-tint": "#bb152c",
+                        "tertiary-fixed": "#dae2fd",
+                        "primary": "#b7102a",
+                        "tertiary": "#545c72",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-bright": "#f9f9f9",
+                        "secondary-fixed": "#ffdad7",
+                        "on-tertiary-container": "#fefcff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-secondary-container": "#60000b",
+                        "surface-dim": "#dadada",
+                        "on-surface-variant": "#5b403f",
+                        "on-primary-fixed": "#410007"
+                    },
+                    fontFamily: {
+                        "headline": ["Noto Serif"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .crimson-gradient-text {
+            background: linear-gradient(to right, #b7102a, #db313f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface">
+    <!-- Top Navigation Bar -->
+    <nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md shadow-sm">
+        <div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+            <span class="text-2xl font-headline font-bold text-primary">Modern Solidarity</span>
+            <div class="hidden md:flex gap-8 items-center">
+                <a class="text-slate-600 hover:text-red-600 transition-colors" href="#">Home</a>
+                <a class="text-slate-600 hover:text-red-600 transition-colors" href="#">Services</a>
+                <a class="text-primary font-bold border-b-2 border-primary" href="#">About Us</a>
+                <a class="text-slate-600 hover:text-red-600 transition-colors" href="#">Case Studies</a>
+                <button
+                    class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-6 py-2 rounded-full font-medium">Get
+                    Legal Aid</button>
+            </div>
+            <!-- Mobile Menu Icon (Visual Only) -->
+            <button class="md:hidden text-primary">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </nav>
+    <main class="pt-24 pb-12 px-6 max-w-2xl mx-auto">
+        <!-- Header Section -->
+        <header class="text-center mb-12">
+            <h1 class="font-headline text-4xl md:text-5xl crimson-gradient-text mb-4">ഞങ്ങളുടെ ദൗത്യം</h1>
+            <p class="text-on-surface-variant text-lg leading-relaxed">
+                Bridging the gap between high-stakes digital security and human-centric legal advocacy.
+            </p>
+        </header>
+        <!-- Vertical Bento Stack -->
+        <div class="space-y-6">
+            <!-- Vision Card -->
+            <div class="glass-card p-8 rounded-xl border border-white/20 shadow-[0_20px_40px_rgba(15,23,42,0.06)]">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-primary/10 p-3 rounded-full">
+                        <span class="material-symbols-outlined text-primary" data-icon="visibility">visibility</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-on-surface">Vision</h2>
+                </div>
+                <p class="text-on-surface-variant leading-relaxed">
+                    To create a world where every individual has immediate access to professional legal protection
+                    against digital threats.
+                </p>
+            </div>
+            <!-- Integrity Card -->
+            <div class="glass-card p-8 rounded-xl border border-white/20 shadow-[0_20px_40px_rgba(15,23,42,0.06)]">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-primary/10 p-3 rounded-full">
+                        <span class="material-symbols-outlined text-primary" data-icon="gavel"
+                            style="font-variation-settings: 'FILL' 1;">gavel</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-on-surface">Integrity</h2>
+                </div>
+                <p class="text-on-surface-variant leading-relaxed">
+                    Our platform is built on the pillars of transparency and ethical law practice, ensuring your rights
+                    are always the priority.
+                </p>
+            </div>
+            <!-- Safety Card -->
+            <div
+                class="glass-card p-8 rounded-xl border-t-4 border-primary border-x-0 border-b-0 shadow-[0_20px_40px_rgba(15,23,42,0.06)] bg-surface-container-lowest">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="bg-primary/10 p-3 rounded-full">
+                        <span class="material-symbols-outlined text-primary" data-icon="shield_lock"
+                            style="font-variation-settings: 'FILL' 1;">shield_lock</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-on-surface">Solidarity</h2>
+                </div>
+                <p class="text-on-surface-variant leading-relaxed">
+                    We stand with the vulnerable. Our pro-bono partners network ensures that financial barriers never
+                    stand in the way of justice.
+                </p>
+            </div>
+            <!-- Team Section (Decorative Hero Image Style) -->
+            <div class="relative overflow-hidden rounded-xl aspect-[16/9] mt-8 group">
+                <img alt="Legal professionals working" class="w-full h-full object-cover"
+                    data-alt="Modern law office interior with warm lighting"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5bck3k-hBIoKKoUUATRtQJNA6ip7UTfZ6M8EwORSG822ZeZ_DxA498oyPFQPu-r2yF1fAvBYAAAF0ei0uz68qpED8eAZaG4QE09wvvF1SIKSqabHB_NGa3XTC2wmjR8b2bikKHphvNmSqr4zEKHy_V9G5GgkBCVqkqQfqNmbpEVOvajz4W_M3rKSkCMx_kAjycLFzNDJCRJVfMWNxRF7KOd2sEEPCvdLfJHNaOYlpTZYW3kVpL9M-2EMNqM4HhCFqOA422eXw9Op1" />
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-6">
+                    <h3 class="text-white font-headline text-2xl">The Team</h3>
+                    <p class="text-white/90 text-sm">Professional. Protective. Empathetic.</p>
+                </div>
+            </div>
+            <!-- Pro Bono Partners Card -->
+            <div class="glass-card p-8 rounded-xl border border-white/20 shadow-[0_20px_40px_rgba(15,23,42,0.06)]">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-primary/10 p-3 rounded-full">
+                        <span class="material-symbols-outlined text-primary" data-icon="handshake">handshake</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-on-surface">Our Partners</h2>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div
+                        class="bg-surface-container-low p-4 rounded-md text-center text-xs font-bold text-on-tertiary-fixed-variant">
+                        GLOBAL JUSTICE INI.</div>
+                    <div
+                        class="bg-surface-container-low p-4 rounded-md text-center text-xs font-bold text-on-tertiary-fixed-variant">
+                        TECH DEFENSE CO.</div>
+                    <div
+                        class="bg-surface-container-low p-4 rounded-md text-center text-xs font-bold text-on-tertiary-fixed-variant">
+                        EQUITY LEGAL</div>
+                    <div
+                        class="bg-surface-container-low p-4 rounded-md text-center text-xs font-bold text-on-tertiary-fixed-variant">
+                        DIGITAL RIGHTS</div>
+                </div>
+            </div>
+        </div>
+        <!-- Call to Action -->
+        <section class="mt-16 text-center">
+            <button
+                class="bg-gradient-to-r from-primary to-primary-container text-on-primary px-10 py-4 rounded-full font-bold shadow-lg transform active:scale-95 transition-transform">
+                Join our Mission
+            </button>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer
+        class="w-full mt-20 bg-slate-100 dark:bg-slate-900 py-12 px-8 flex flex-col md:flex-row justify-between items-center gap-6 border-t border-slate-200/50">
+        <div class="text-center md:text-left">
+            <span class="font-headline font-bold text-primary text-xl">Modern Solidarity</span>
+            <p class="font-body text-sm text-slate-600 mt-2 max-w-xs">© 2024 Modern Solidarity Legal Aid. Protective.
+                Professional. Empathetic.</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-6">
+            <a class="text-slate-500 hover:text-red-600 hover:underline decoration-red-500/30 text-sm transition-opacity opacity-80 hover:opacity-100"
+                href="#">Privacy Policy</a>
+            <a class="text-slate-500 hover:text-red-600 hover:underline decoration-red-500/30 text-sm transition-opacity opacity-80 hover:opacity-100"
+                href="#">Terms of Service</a>
+            <a class="text-slate-500 hover:text-red-600 hover:underline decoration-red-500/30 text-sm transition-opacity opacity-80 hover:opacity-100"
+                href="#">Contact Support</a>
+            <a class="text-slate-500 hover:text-red-600 hover:underline decoration-red-500/30 text-sm transition-opacity opacity-80 hover:opacity-100"
+                href="#">Pro Bono Partners</a>
+        </div>
+    </footer>
+    <!-- Mobile Bottom Navigation (Hidden on desktop) -->
+    <nav
+        class="md:hidden fixed bottom-0 w-full bg-white/90 backdrop-blur-md px-6 py-3 flex justify-around items-center border-t border-slate-100 z-50">
+        <button class="flex flex-col items-center gap-1 text-slate-500">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[10px]">Home</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-slate-500">
+            <span class="material-symbols-outlined">gavel</span>
+            <span class="text-[10px]">Services</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-primary">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">info</span>
+            <span class="text-[10px] font-bold">About Us</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-slate-500">
+            <span class="material-symbols-outlined">mail</span>
+            <span class="text-[10px]">Contact</span>
+        </button>
+    </nav>
+</body>
+
+</html>
