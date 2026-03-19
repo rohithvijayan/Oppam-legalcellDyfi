@@ -38,9 +38,9 @@ const config: Config = {
         "on-background": "#000000",
       },
       fontFamily: {
-        headline: ["Noto Serif Malayalam", "Noto Serif", "serif"],
-        body: ["Inter", "Noto Sans Malayalam", "sans-serif"],
-        label: ["Inter", "sans-serif"],
+        headline: ["Anek Malayalam", "sans-serif"],
+        body: ["Anek Malayalam", "sans-serif"],
+        label: ["Anek Malayalam", "sans-serif"],
       },
       borderRadius: {
         DEFAULT: "1rem",

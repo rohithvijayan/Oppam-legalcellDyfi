@@ -8,19 +8,25 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Full-Screen Background Image */}
-      <div 
-        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+      {/* Responsive Full-Screen Background Image */}
+      {/* Mobile View */}
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat md:hidden"
+        style={{ backgroundImage: "url('/heromobilebg.webp')" }}
+      />
+      {/* Desktop View */}
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat hidden md:block"
         style={{ backgroundImage: "url('/heroBg.webp')" }}
       />
       {/* The Wash: Dark Overlay */}
-      <div className="fixed inset-0 z-10 bg-black/60 backdrop-blur-[2px]" />
+      <div className="fixed inset-0 z-10 bg-black/50 backdrop-blur-[2px]" />
 
       <div className="relative z-20 max-w-7xl mx-auto px-6 md:px-8 py-12 pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
 
           {/* Left: Hero */}
-          <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-28 text-white">
+          <div className="lg:col-span-6 space-y-8 lg:sticky lg:top-28 text-white">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/20 rounded-full border border-primary/40">
               <span className="material-symbols-outlined text-primary-container text-sm">verified_user</span>
@@ -29,10 +35,10 @@ export default function Home() {
 
             {/* Title */}
             <div>
-              <h1 className="text-7xl md:text-8xl lg:text-[5.5rem] font-black font-headline text-white leading-[1.05] tracking-tight drop-shadow-2xl">
+              <h1 className="text-6xl md:text-7xl lg:text-[5rem] font-[800] font-headline text-white leading-[1] tracking-tighter drop-shadow-2xl">
                 {t.home.heroTitle}
               </h1>
-              <div className="h-1.5 w-28 bg-gradient-to-r from-primary to-transparent mt-4 rounded-full" />
+              <div className="h-2 w-32 bg-gradient-to-r from-primary to-transparent mt-6 rounded-full" />
             </div>
 
             {/* Subtitle */}
@@ -67,7 +73,7 @@ export default function Home() {
           </div>
 
           {/* Right: Form */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-6">
             <ComplaintForm />
           </div>
         </div>

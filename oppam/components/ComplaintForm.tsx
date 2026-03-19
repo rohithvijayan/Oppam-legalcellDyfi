@@ -63,36 +63,36 @@ export default function ComplaintForm() {
     }
   };
 
-  const inputClass = "w-full bg-[#000000]/40 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-primary/50 focus:outline-none transition-all text-sm backdrop-blur-md";
-  const labelClass = `block text-xs font-bold uppercase tracking-wider mb-2 ml-1 ${locale === 'ml' ? 'font-headline text-xs' : ''} text-white/70`;
+  const inputClass = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-primary/50 focus:outline-none transition-all text-sm backdrop-blur-xl hover:bg-white/10";
+  const labelClass = `block text-xs font-bold uppercase tracking-wider mb-2 ml-1 ${locale === 'ml' ? 'font-headline text-xs' : ''} text-white/50`;
   const errorClass = "text-red-400 text-xs mt-1 ml-1 font-medium";
 
   return (
-    <div className="bg-[#000000]/30 backdrop-blur-2xl rounded-2xl p-7 md:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] border border-white/10" id="form">
+    <div className="bg-white/10 backdrop-blur-3xl rounded-2xl p-7 md:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-white/10 group/form" id="form">
       {/* Top accent bar */}
-      <div className="h-1.5 w-full bg-gradient-to-r from-primary to-primary-container rounded-full mb-8 -mt-1 shadow-[0_0_15px_rgba(207,0,0,0.3)]" />
+      <div className="h-2 w-full bg-gradient-to-r from-primary to-primary-container rounded-full mb-8 -mt-1 shadow-[0_0_20px_rgba(207,0,0,0.4)]" />
 
-      <div className="mb-7">
-        <h2 className="font-headline text-2xl font-bold text-white mb-1">{t.home.formTitle}</h2>
-        <p className="text-sm text-white/60">{t.home.formConfidential}</p>
+      <div className="mb-8 text-center sm:text-left">
+        <h2 className="font-headline text-3xl font-[800] text-white mb-2 tracking-tight drop-shadow-sm">{t.home.formTitle}</h2>
+        <p className="text-sm text-white/60 font-light">{t.home.formConfidential}</p>
       </div>
 
       {status === "success" && (
-        <div className="mb-6 p-4 rounded-xl bg-green-500/10 border border-green-500/30 flex items-start gap-3">
+        <div className="mb-6 p-4 rounded-xl bg-green-500/20 border border-green-500/30 flex items-start gap-3">
           <span className="material-symbols-outlined text-green-400">check_circle</span>
-          <p className="text-green-300 text-sm font-medium">{t.home.submitSuccess}</p>
+          <p className="text-green-200 text-sm font-medium">{t.home.submitSuccess}</p>
         </div>
       )}
       {status === "error" && (
-        <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-3">
+        <div className="mb-6 p-4 rounded-xl bg-red-500/20 border border-red-500/30 flex items-start gap-3">
           <span className="material-symbols-outlined text-red-400">error</span>
-          <p className="text-red-300 text-sm font-medium">{t.home.submitError}</p>
+          <p className="text-red-200 text-sm font-medium">{t.home.submitError}</p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Name & Age */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <label className={labelClass}>{f.name}</label>
             <input {...register("victim_name")} type="text" placeholder={f.namePlaceholder} className={inputClass} />
@@ -113,7 +113,7 @@ export default function ComplaintForm() {
         </div>
 
         {/* Phone & Email */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <label className={labelClass}>{f.phone}</label>
             <input {...register("contact_phone")} type="tel" placeholder={f.phonePlaceholder} className={inputClass} />
@@ -129,17 +129,20 @@ export default function ComplaintForm() {
         {/* District */}
         <div>
           <label className={labelClass}>{f.district}</label>
-          <select {...register("district")} className={`${inputClass} appearance-none cursor-pointer`}>
-            <option value="" className="bg-slate-900">{f.districtPlaceholder}</option>
-            {t.districts.map((d) => (
-              <option key={d} value={d} className="bg-slate-900">{d}</option>
-            ))}
-          </select>
+          <div className="relative">
+            <select {...register("district")} className={`${inputClass} appearance-none cursor-pointer pr-10`}>
+              <option value="" className="bg-slate-900">{f.districtPlaceholder}</option>
+              {t.districts.map((d) => (
+                <option key={d} value={d} className="bg-slate-900">{d}</option>
+              ))}
+            </select>
+            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none">expand_more</span>
+          </div>
           {errors.district && <p className={errorClass}>{errors.district.message}</p>}
         </div>
 
         {/* Local Body & Police Station */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <label className={labelClass}>{f.localBody}</label>
             <input {...register("local_body")} type="text" placeholder={f.localBodyPlaceholder} className={inputClass} />
@@ -153,26 +156,28 @@ export default function ComplaintForm() {
         </div>
 
         {/* Social Links */}
-        <div>
-          <label className={labelClass}>{f.victimSocialLink}</label>
-          <input {...register("victim_social_link")} type="url" placeholder={f.victimSocialLinkPlaceholder} className={inputClass} />
-          {errors.victim_social_link && <p className={errorClass}>{errors.victim_social_link.message}</p>}
-        </div>
-        <div>
-          <label className={labelClass}>{f.accusedSocialLink}</label>
-          <input {...register("accused_social_link")} type="url" placeholder={f.accusedSocialLinkPlaceholder} className={inputClass} />
-          {errors.accused_social_link && <p className={errorClass}>{errors.accused_social_link.message}</p>}
+        <div className="space-y-6">
+          <div>
+            <label className={labelClass}>{f.victimSocialLink}</label>
+            <input {...register("victim_social_link")} type="url" placeholder={f.victimSocialLinkPlaceholder} className={inputClass} />
+            {errors.victim_social_link && <p className={errorClass}>{errors.victim_social_link.message}</p>}
+          </div>
+          <div>
+            <label className={labelClass}>{f.accusedSocialLink}</label>
+            <input {...register("accused_social_link")} type="url" placeholder={f.accusedSocialLinkPlaceholder} className={inputClass} />
+            {errors.accused_social_link && <p className={errorClass}>{errors.accused_social_link.message}</p>}
+          </div>
         </div>
 
         {/* Evidence Upload */}
         <div>
           <label className={labelClass}>{f.evidence}</label>
-          <div className="relative border-2 border-dashed border-white/10 rounded-xl p-8 text-center bg-[#000000]/20 hover:bg-[#000000]/40 transition-colors cursor-pointer group backdrop-blur-md">
-            <span className="material-symbols-outlined text-4xl text-primary/50 group-hover:text-primary transition-colors block mb-2">cloud_upload</span>
-            <p className="text-sm font-medium text-white/70">
+          <div className="relative border-2 border-dashed border-white/10 rounded-xl p-10 text-center bg-white/5 hover:bg-white/10 transition-all cursor-pointer group/upload backdrop-blur-xl">
+            <span className="material-symbols-outlined text-4xl text-primary/40 group-hover/upload:text-primary transition-all block mb-3">cloud_upload</span>
+            <p className="text-sm font-semibold text-white/80">
               {evidenceFiles.length > 0 ? `${evidenceFiles.length} file(s) selected` : f.evidence}
             </p>
-            <p className="text-xs text-white/40 mt-1">{f.evidenceDesc}</p>
+            <p className="text-xs text-white/40 mt-1.5">{f.evidenceDesc}</p>
             <input
               type="file"
               accept="image/jpeg,image/png,application/pdf"
@@ -187,18 +192,18 @@ export default function ComplaintForm() {
         {/* Description */}
         <div>
           <label className={labelClass}>{f.description}</label>
-          <textarea {...register("description")} rows={3} placeholder={f.descriptionPlaceholder} className={inputClass} />
+          <textarea {...register("description")} rows={4} placeholder={f.descriptionPlaceholder} className={inputClass} />
         </div>
 
         {/* Consent */}
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-4 p-1">
           <input
             {...register("consent")}
             type="checkbox"
             id="consent"
-            className="mt-1 rounded border-white/20 bg-transparent text-primary focus:ring-primary accent-primary"
+            className="mt-1 w-5 h-5 rounded border-white/20 bg-white/10 text-primary focus:ring-primary accent-primary cursor-pointer transition-all"
           />
-          <label htmlFor="consent" className="text-xs text-white/60 leading-relaxed cursor-pointer">
+          <label htmlFor="consent" className="text-xs text-white/60 leading-relaxed cursor-pointer select-none">
             {f.consent}
           </label>
         </div>
@@ -208,15 +213,15 @@ export default function ComplaintForm() {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="w-full py-4 rounded-full bg-gradient-to-r from-primary to-primary-container text-white font-bold text-base shadow-[0_10px_30px_rgba(207,0,0,0.3)] hover:shadow-[0_15px_40px_rgba(207,0,0,0.5)] hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full py-5 rounded-xl bg-gradient-to-r from-primary to-primary-container text-white font-[800] text-lg shadow-[0_15px_40px_rgba(207,0,0,0.3)] hover:shadow-[0_20px_50px_rgba(207,0,0,0.5)] hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed group/btn"
         >
-          <span className="material-symbols-outlined text-lg">send</span>
+          <span className="material-symbols-outlined text-xl group-hover/btn:translate-x-1 transition-transform">send</span>
           {status === "submitting" ? t.home.submitting : t.home.submitButton}
         </button>
 
         {/* Trust bar */}
-        <p className="text-xs text-center text-white/40 mt-2 flex items-center justify-center gap-2">
-          <span className="material-symbols-outlined text-sm">lock</span>
+        <p className="text-xs text-center text-white/30 pt-2 flex items-center justify-center gap-2 font-light">
+          <span className="material-symbols-outlined text-base">verified</span>
           {t.home.trustBadge}
         </p>
       </form>
