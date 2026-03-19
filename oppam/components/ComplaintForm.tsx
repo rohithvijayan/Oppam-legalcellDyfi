@@ -63,8 +63,8 @@ export default function ComplaintForm() {
     }
   };
 
-  const inputClass = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 focus:ring-2 focus:ring-primary/50 focus:outline-none transition-all text-sm backdrop-blur-xl hover:bg-white/10";
-  const labelClass = `block text-xs font-bold uppercase tracking-wider mb-2 ml-1 ${locale === 'ml' ? 'font-headline text-xs' : ''} text-white/50`;
+  const inputClass = "w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3.5 text-white font-bold placeholder:text-white/30 focus:ring-2 focus:ring-primary/50 focus:outline-none transition-all text-sm backdrop-blur-xl hover:bg-white/10";
+  const labelClass = `block text-xs font-[800] uppercase tracking-wider mb-2 ml-1 ${locale === 'ml' ? 'font-headline text-xs' : ''} text-white`;
   const errorClass = "text-red-400 text-xs mt-1 ml-1 font-medium";
 
   return (

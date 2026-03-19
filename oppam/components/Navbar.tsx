@@ -30,9 +30,6 @@ export default function Navbar() {
             <Link href="/about" className="text-sm text-on-surface-variant hover:text-primary font-medium transition-colors">
               {t.nav.about}
             </Link>
-            <Link href="/#form" className="text-sm text-on-surface-variant hover:text-primary font-medium transition-colors">
-              {t.nav.legalAid}
-            </Link>
           </div>
 
           {/* Right Actions */}
@@ -76,9 +73,6 @@ export default function Navbar() {
             </Link>
             <Link href="/about" onClick={() => setMobileOpen(false)} className="py-2 text-on-surface-variant font-medium hover:text-primary transition-colors">
               {t.nav.about}
-            </Link>
-            <Link href="/#form" onClick={() => setMobileOpen(false)} className="py-2 text-on-surface-variant font-medium hover:text-primary transition-colors">
-              {t.nav.legalAid}
             </Link>
             <Link
               href="/#form"

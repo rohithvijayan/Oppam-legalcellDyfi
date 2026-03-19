@@ -5,7 +5,6 @@ export const dictionaries = {
     nav: {
       home: "Home",
       about: "About Us",
-      legalAid: "Legal Aid",
       contact: "Contact",
       getHelp: "Get Help",
     },
@@ -130,7 +129,6 @@ export const dictionaries = {
     nav: {
       home: "ഹോം",
       about: "ഞങ്ങളെക്കുറിച്ച്",
-      legalAid: "നിയമ സഹായം",
       contact: "ബന്ധപ്പെടുക",
       getHelp: "സഹായം തേടുക",
     },
@@ -257,7 +255,7 @@ export type Locale = keyof typeof dictionaries;
 export interface Dictionary {
   brand: string;
   brandTagline: string;
-  nav: { home: string; about: string; legalAid: string; contact: string; getHelp: string };
+  nav: { home: string; about: string; contact: string; getHelp: string };
   home: {
     heroTitle: string; heroSubtitle: string; formTitle: string; formConfidential: string;
     fields: {
