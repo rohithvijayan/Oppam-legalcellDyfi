@@ -33,13 +33,6 @@ export default function Footer() {
                 <li><Link href="/track" className="hover:text-primary transition-colors">Track Complaint</Link></li>
               </ul>
             </div>
-            <div className="space-y-4">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-on-surface">Support</h4>
-              <ul className="space-y-3 text-sm text-on-surface-variant">
-                <li><Link href="/admin" className="hover:text-primary transition-colors">Admin Login</Link></li>
-                <li><a href="mailto:support@oppam.org" className="hover:text-primary transition-colors">{t.footer.contact}</a></li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>

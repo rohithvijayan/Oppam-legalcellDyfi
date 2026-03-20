@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import * as fpixel from "@/lib/fpixel";
+import * as gtag from "@/lib/gtag";
 
 const schema = z.object({
   victim_name: z.string().min(2, "Name must be at least 2 characters"),
@@ -60,6 +61,11 @@ export default function ComplaintForm() {
       const json = await res.json();
       setComplaintNumber(json.complaint_number ?? null);
       fpixel.event("SubmitApplication");
+      gtag.event({
+        action: "generate_lead",
+        category: "engagement",
+        label: "complaint_submission",
+      });
       setStatus("success");
       reset();
       setEvidenceFiles([]);

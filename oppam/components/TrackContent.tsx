@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import * as fpixel from "@/lib/fpixel";
+import * as gtag from "@/lib/gtag";
 
 type TrackResult = {
   complaint_number: string;
@@ -61,6 +62,11 @@ export default function TrackContent() {
         const data = await res.json();
         setResult(data);
         fpixel.event("Search", { search_string: id });
+        gtag.event({
+          action: "search",
+          category: "engagement",
+          label: id,
+        });
       }
     } catch {
       setError("Network error. Please check your connection.");

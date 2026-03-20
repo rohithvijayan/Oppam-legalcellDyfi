@@ -4,6 +4,7 @@ import { LanguageProvider } from "@/components/LanguageProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FacebookPixel from "@/components/FacebookPixel";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -115,6 +116,7 @@ export default function RootLayout({
         />
         <Suspense fallback={null}>
           <FacebookPixel />
+          <GoogleAnalytics />
         </Suspense>
       </head>
       <body className="min-h-screen flex flex-col">
