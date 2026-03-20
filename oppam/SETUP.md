@@ -22,8 +22,26 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_public_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_secret
 ENCRYPTION_KEY=your_32_byte_secret_hex_string
 
+# Email Configuration (for auto-replies)
+GMAIL_USER=yourgmail@gmail.com
+GMAIL_APP_PASSWORD=your_16_char_app_password
+
 # Add any other required environment variables across the app here
 ```
+
+### 3.1 Gmail SMTP Setup
+To allow the application to send emails using your Gmail account, you must follow these steps:
+1.  **Enable 2-Step Verification**: Go to your [Google Account Settings](https://myaccount.google.com/security) and ensure 2-Step Verification is turned **ON**.
+2.  **Generate App Password**:
+    - Search for "App Passwords" in the search bar at the top of your Google Account page.
+    - Enter a name for the app (e.g., "Oppam Portal").
+    - Click **Create**.
+3.  **Copy the Password**: Google will display a **16-character password** (e.g., `abcd efgh ijkl mnop`).
+4.  **Update .env.local**:
+    - Set `GMAIL_USER` to your full Gmail address.
+    - Set `GMAIL_APP_PASSWORD` to the 16-character code (remove spaces).
+
+> **Important**: Never use your regular Gmail login password in the `.env.local` file. It will not work and is insecure. Always use an App Password.
 
 > **Note**: `SUPABASE_SERVICE_ROLE_KEY` and `ENCRYPTION_KEY` are highly sensitive keys. Never expose them to the client side. `ENCRYPTION_KEY` secures PII at rest and MUST be exactly the same always to decrypt old records.
 
