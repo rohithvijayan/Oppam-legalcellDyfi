@@ -59,14 +59,14 @@ export async function POST(req: NextRequest) {
 
     for (const file of evidenceFiles) {
       // Strict MIME and size validation
-      if (!["image/jpeg", "image/png", "application/pdf"].includes(file.type)) {
+      if (!["image/jpeg", "image/png", "application/pdf", "video/mp4", "video/webm", "video/quicktime"].includes(file.type)) {
         return NextResponse.json({ error: "Invalid file type" }, { status: 400 });
       }
-      if (file.size > 2 * 1024 * 1024) {
-        return NextResponse.json({ error: "File exceeds 2MB limit" }, { status: 400 });
+      if (file.size > 50 * 1024 * 1024) {
+        return NextResponse.json({ error: "File exceeds 50MB limit" }, { status: 400 });
       }
 
-      const ext = file.type === "application/pdf" ? "pdf" : file.type === "image/png" ? "png" : "jpg";
+      const ext = file.type === "application/pdf" ? "pdf" : file.type === "image/png" ? "png" : file.type.startsWith("video/") ? file.type.split("/")[1] : "jpg";
       const fileName = `evidence/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
       const { error: uploadError } = await supabase.storage

@@ -37,9 +37,9 @@ export default function ComplaintForm() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFileError("");
     const files = Array.from(e.target.files || []);
-    const oversized = files.filter(f => f.size > 2 * 1024 * 1024);
+    const oversized = files.filter(f => f.size > 50 * 1024 * 1024);
     if (oversized.length > 0) {
-      setFileError("Each file must be under 2MB");
+      setFileError("Each file must be under 50MB");
       e.target.value = "";
       return;
     }
@@ -180,7 +180,7 @@ export default function ComplaintForm() {
             <p className="text-xs text-white/40 mt-1.5">{f.evidenceDesc}</p>
             <input
               type="file"
-              accept="image/jpeg,image/png,application/pdf"
+              accept="image/jpeg,image/png,application/pdf,video/mp4,video/webm,video/quicktime"
               multiple
               onChange={handleFileChange}
               className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"

@@ -13,11 +13,6 @@ export default function Footer() {
           <span className="font-headline font-black text-primary text-xl">{t.brand}</span>
           <p className="text-xs text-on-surface-variant mt-1">{t.footer.copyright}</p>
         </div>
-        <div className="flex flex-wrap justify-center gap-6">
-          <Link href="#" className="text-sm text-on-surface-variant hover:text-primary transition-colors">{t.footer.privacy}</Link>
-          <Link href="#" className="text-sm text-on-surface-variant hover:text-primary transition-colors">{t.footer.terms}</Link>
-          <Link href="#" className="text-sm text-on-surface-variant hover:text-primary transition-colors">{t.footer.contact}</Link>
-        </div>
       </div>
     </footer>
   );

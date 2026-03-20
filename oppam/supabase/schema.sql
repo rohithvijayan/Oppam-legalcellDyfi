@@ -49,8 +49,8 @@ CREATE POLICY "Allow admin to update complaints"
 -- Evidence Storage Bucket (run in Supabase dashboard under Storage)
 -- 1. Create a bucket named: evidence
 -- 2. Set to PRIVATE (not public)
--- 3. Allowed MIME types: image/jpeg, image/png, application/pdf
--- 4. Max file size: 2097152 bytes (2MB)
+-- 3. Allowed MIME types: image/jpeg, image/png, application/pdf, video/mp4, video/webm, video/quicktime
+-- 4. Max file size: 52428800 bytes (50MB)
 
 -- Storage RLS: Only admins can read signed URLs
 -- The API route handles uploads using the anon key, which bypasses bucket policies.
