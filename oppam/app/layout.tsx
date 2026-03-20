@@ -3,6 +3,8 @@ import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FacebookPixel from "@/components/FacebookPixel";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: {
@@ -111,6 +113,9 @@ export default function RootLayout({
             }),
           }}
         />
+        <Suspense fallback={null}>
+          <FacebookPixel />
+        </Suspense>
       </head>
       <body className="min-h-screen flex flex-col">
         <LanguageProvider>

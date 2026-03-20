@@ -5,6 +5,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import * as fpixel from "@/lib/fpixel";
 
 const schema = z.object({
   victim_name: z.string().min(2, "Name must be at least 2 characters"),
@@ -58,6 +59,7 @@ export default function ComplaintForm() {
       if (!res.ok) throw new Error("Failed");
       const json = await res.json();
       setComplaintNumber(json.complaint_number ?? null);
+      fpixel.event("SubmitApplication");
       setStatus("success");
       reset();
       setEvidenceFiles([]);

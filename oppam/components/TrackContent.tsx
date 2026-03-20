@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import * as fpixel from "@/lib/fpixel";
 
 type TrackResult = {
   complaint_number: string;
@@ -59,6 +60,7 @@ export default function TrackContent() {
       } else {
         const data = await res.json();
         setResult(data);
+        fpixel.event("Search", { search_string: id });
       }
     } catch {
       setError("Network error. Please check your connection.");
