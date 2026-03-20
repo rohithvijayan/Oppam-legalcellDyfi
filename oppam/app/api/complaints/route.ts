@@ -30,15 +30,23 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
+const getClientIp = (req: NextRequest): string => {
+  const forwardedFor = req.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    // The first IP in the list is the original client IP
+    return forwardedFor.split(",")[0].trim();
+  }
+  return req.headers.get("x-real-ip") || "unknown";
+};
+
 export async function POST(req: NextRequest) {
   // Rate limiting
-  const ip = req.headers.get("x-forwarded-for") || "unknown";
+  const ip = getClientIp(req);
   if (isRateLimited(ip)) {
     return NextResponse.json({ error: "Too many requests. Try again later." }, { status: 429 });
   }
 
-  try {
-    const formData = await req.formData();
+  try {    const formData = await req.formData();
 
     // Extract and validate text fields
     const rawData = Object.fromEntries(

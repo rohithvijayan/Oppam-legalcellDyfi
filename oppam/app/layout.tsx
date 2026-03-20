@@ -21,18 +21,57 @@ export const metadata: Metadata = {
     "legal aid platform",
     "cyber harassment complaint",
   ],
+  authors: [{ name: "Oppam Legal Aid" }],
+  creator: "Oppam Legal Aid",
+  publisher: "Oppam Legal Aid",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL("https://oppam.online"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "ml_IN",
     alternateLocale: ["en_IN"],
+    url: "https://oppam.online",
     siteName: "ഒപ്പം | Oppam",
-    title: "ഒപ്പം - Cyber Neethi Support Portal",
-    description:
-      "File a confidential cybercrime complaint online. Free legal support for victims of cyber abuse, sexual harassment, and communal threats.",
+    title: "ഒപ്പം - Oppam Cyber Legal Aid",
+    description: "Secure, confidential portal to report cybercrimes in Kerala.",
+    images: [
+      {
+        url: "/heroBg.webp",
+        width: 1200,
+        height: 630,
+        alt: "Oppam Legal Aid Portal",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ഒപ്പം | Oppam - Cyber Neethi Support Portal",
+    description: "Free legal support for cybercrime victims in Kerala.",
+    images: ["/heroBg.webp"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  category: "Legal",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
   },
 };
 
@@ -44,6 +83,7 @@ export default function RootLayout({
   return (
     <html lang="ml">
       <head>
+        <meta name="theme-color" content="#cf0000" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -56,12 +96,18 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LegalService",
-              name: "ഒപ്പം - Oppam Legal Aid",
-              description:
-                "Free legal support for cybercrime victims in Kerala.",
-              areaServed: { "@type": "State", name: "Kerala" },
-              availableLanguage: ["Malayalam", "English"],
-              sameAs: [],
+              "name": "Oppam Legal Cell",
+              "description": "Free legal support for cybercrime victims in Kerala.",
+              "url": "https://oppam.online",
+              "logo": "https://oppam.online/favicon.ico",
+              "areaServed": { "@type": "State", name: "Kerala" },
+              "availableLanguage": ["Malayalam", "English"],
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Kannur",
+                "addressRegion": "Kerala",
+                "addressCountry": "IN"
+              }
             }),
           }}
         />
