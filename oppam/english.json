@@ -1,0 +1,134 @@
+{
+  "brand": "Oppam",
+  "brandTagline": "We stand with you.",
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "contact": "Contact",
+    "getHelp": "Seek Legal Advice",
+    "languageToggle": "English"
+  },
+  "home": {
+    "heroTitle": "Oppam",
+    "heroSubtitle": "We stand by your side to legally combat cyber abuse. You are not alone.",
+    "formTitle": "Provide Details for Legal Advice",
+    "formConfidential": "The information you provide will be kept strictly confidential.",
+    "fields": {
+      "name": "Full Name",
+      "namePlaceholder": "Enter your full name",
+      "age": "Age",
+      "agePlaceholder": "Enter your age",
+      "address": "Address",
+      "addressPlaceholder": "Enter your full address",
+      "phone": "Mobile Number",
+      "phonePlaceholder": "Enter your 10-digit mobile number",
+      "email": "Email Address",
+      "district": "District",
+      "districtPlaceholder": "Select your district",
+      "localBody": "Local Body (Panchayat / Municipality / Corporation)",
+      "localBodyPlaceholder": "Enter the name of your local body",
+      "policeStation": "Nearest Police Station",
+      "policeStationPlaceholder": "Enter the name of your nearest police station",
+      "victimSocialLink": "Your Social Media Profile Link",
+      "victimSocialLinkPlaceholder": "Enter your Facebook / Instagram profile link",
+      "accusedSocialLink": "Profile Link of the Opposing Party (If available)",
+      "accusedSocialLinkPlaceholder": "Enter the account link here",
+      "evidence": "Upload Evidence (Screenshots, Videos, Voice Clips)",
+      "evidenceDesc": "Allowed files: JPG, PNG, PDF, MP4, WEBM (Max 50MB per file)",
+      "description": "Brief Description of the Incident (Optional)",
+      "descriptionPlaceholder": "Briefly explain what happened...",
+      "consent": "I hereby certify that the information provided is true, and I consent to its use solely for the purpose of receiving legal advice."
+    },
+    "submitButton": "Submit Request",
+    "submitting": "Submitting, please wait...",
+    "submitSuccess": "Your request has been submitted successfully. Our representative will contact you shortly.",
+    "submitError": "A technical issue occurred while submitting. Please try again.",
+    "trustBadge": "Fully Secure · Highly Confidential · Expert Legal Advice"
+  },
+  "about": {
+    "pageTitle": "About Us",
+    "pageSubtitle": "A platform ensuring free and expert legal advice for victims of cyber abuse.",
+    "mission": {
+      "label": "Our Mission",
+      "title": "Making Cyberspace Safe for Everyone.",
+      "body": "'Oppam' aims to ensure legal protection for those who are overwhelmed by online abuse. With the help of modern technology and expert lawyers, we are here to listen to you and support you through legal avenues.",
+      "footer": "Legal Protection, Social Commitment, Utmost Confidentiality"
+    },
+    "privacy": {
+      "title": "Data Privacy & Security",
+      "body": "The information and evidence you share will be completely secure. Your requests will be handled with the utmost confidentiality.",
+      "button": "Read Our Privacy Policy"
+    },
+    "partners": {
+      "label": "Our Network",
+      "title": "Moving Forward Together",
+      "body": "A dedicated collective comprising social workers, cyber experts, and lawyers is working together for you."
+    },
+    "contact": {
+      "title": "Need More Information?",
+      "body": "You can contact our team directly for any queries.",
+      "link": "Contact Us"
+    },
+    "proSono": {
+      "title": "Free Legal Advice",
+      "body": "We provide legal advice without any fees to all eligible individuals.",
+      "button": "Request Help"
+    }
+  },
+  "admin": {
+    "loginTitle": "Admin Login",
+    "loginSubtitle": "Access the Oppam Grievance Redressal Portal.",
+    "email": "Email ID",
+    "password": "Password",
+    "loginButton": "Login",
+    "loggingIn": "Logging in, please wait...",
+    "loginError": "The email or password you entered is incorrect. Please check again.",
+    "dashboardTitle": "Grievance Dashboard",
+    "statsTotal": "Total Requests Received",
+    "statsPending": "Pending Review",
+    "statsReviewed": "Reviewed",
+    "statsActionTaken": "Action Taken",
+    "tableHeaders": {
+      "name": "Applicant Name",
+      "district": "District",
+      "date": "Date Received",
+      "status": "Current Status",
+      "action": "More Details"
+    },
+    "viewDetails": "View Full Details",
+    "updateStatus": "Update Status",
+    "close": "Close",
+    "status": {
+      "PENDING": "Pending Review",
+      "REVIEWED": "Review Completed",
+      "ACTION_TAKEN": "Action Taken"
+    },
+    "adminNotes": "Admin Notes",
+    "adminNotesPlaceholder": "Add investigation progress and other details regarding the request here...",
+    "saveChanges": "Save Changes",
+    "evidenceLinks": "Submitted Evidence",
+    "logout": "Logout"
+  },
+  "footer": {
+    "copyright": "Copyleft: Oppam Legal Advice 2026",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Support"
+  },
+  "districts": [
+    "Thiruvananthapuram",
+    "Kollam",
+    "Pathanamthitta",
+    "Alappuzha",
+    "Kottayam",
+    "Idukki",
+    "Ernakulam",
+    "Thrissur",
+    "Palakkad",
+    "Malappuram",
+    "Kozhikode",
+    "Wayanad",
+    "Kannur",
+    "Kasaragod"
+  ]
+}
