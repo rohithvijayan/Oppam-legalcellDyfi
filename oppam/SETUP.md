@@ -20,11 +20,12 @@ Create a `.env.local` file in the root of your project (`d:\legalcell\oppam\.env
 NEXT_PUBLIC_SUPABASE_URL=your_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_public_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_secret
+ENCRYPTION_KEY=your_32_byte_secret_hex_string
 
 # Add any other required environment variables across the app here
 ```
 
-> **Note**: `SUPABASE_SERVICE_ROLE_KEY` is a highly sensitive key. Never expose it to the client side.
+> **Note**: `SUPABASE_SERVICE_ROLE_KEY` and `ENCRYPTION_KEY` are highly sensitive keys. Never expose them to the client side. `ENCRYPTION_KEY` secures PII at rest and MUST be exactly the same always to decrypt old records.
 
 ## 4. Database Setup (SQL Query)
 
@@ -63,10 +64,10 @@ CREATE TABLE IF NOT EXISTS complaints (
 ALTER TABLE complaints ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Anyone (anon) can INSERT a complaint
-CREATE POLICY "Allow anonymous complaint submission"
-  ON complaints FOR INSERT
-  TO anon
-  WITH CHECK (true);
+  CREATE POLICY "Allow anonymous complaint submission"
+    ON complaints FOR INSERT
+    TO anon
+    WITH CHECK (true);
 
 -- Policy: Only authenticated users (admins) can read complaints
 CREATE POLICY "Allow admin to read complaints"

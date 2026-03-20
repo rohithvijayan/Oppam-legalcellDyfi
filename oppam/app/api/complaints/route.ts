@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 import { z } from "zod";
+import { encrypt } from "@/lib/crypto";
 
 const schema = z.object({
   victim_name: z.string().min(2).max(200),
@@ -81,20 +82,20 @@ export async function POST(req: NextRequest) {
       evidenceUrls.push(fileName);
     }
 
-    // Insert complaint
+    // Insert complaint with encrypted fields at rest
     const { error: insertError } = await supabase.from("complaints").insert({
-      victim_name,
-      victim_age,
-      address,
-      contact_phone,
-      contact_email,
+      victim_name: encrypt(victim_name),
+      victim_age, // integers remain as is
+      address: encrypt(address),
+      contact_phone: encrypt(contact_phone),
+      contact_email: encrypt(contact_email),
       location_district: district,
       location_local_body: local_body,
       police_station,
-      victim_social_link,
-      accused_social_link,
+      victim_social_link: encrypt(victim_social_link),
+      accused_social_link: encrypt(accused_social_link),
       evidence_urls: evidenceUrls,
-      description: description || null,
+      description: description ? encrypt(description) : null,
       status: "PENDING",
     });
 

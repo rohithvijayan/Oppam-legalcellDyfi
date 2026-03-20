@@ -52,13 +52,25 @@ export default function AdminDashboard() {
 
   const fetchComplaints = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("complaints")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (!error && data) setComplaints(data as Complaint[]);
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.replace("/admin");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/admin/complaints", {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setComplaints(data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
     setLoading(false);
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     checkAuth();
