@@ -93,7 +93,7 @@ export default function AboutPage() {
             </p>
           </div>
           
-          <Link href="/form" className="relative z-10 w-full md:w-auto bg-primary text-white font-[800] py-4 md:py-5 px-8 md:px-12 rounded-2xl flex justify-center items-center gap-3 hover:scale-105 active:scale-95 transition-all shrink-0 shadow-[0_15px_40px_rgba(207,0,0,0.3)] hover:shadow-[0_20px_50px_rgba(207,0,0,0.5)] tracking-wide">
+          <Link href="/" className="relative z-10 w-full md:w-auto bg-primary text-white font-[800] py-4 md:py-5 px-8 md:px-12 rounded-2xl flex justify-center items-center gap-3 hover:scale-105 active:scale-95 transition-all shrink-0 shadow-[0_15px_40px_rgba(207,0,0,0.3)] hover:shadow-[0_20px_50px_rgba(207,0,0,0.5)] tracking-wide">
             <span className="text-base md:text-lg">{t.nav?.getHelp || "Get Help Now"}</span>
             <span className="material-symbols-outlined text-lg md:text-xl">arrow_forward</span>
           </Link>

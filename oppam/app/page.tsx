@@ -30,7 +30,7 @@ export default function Home() {
             {/* Badge */}
             <div className="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-primary/20 rounded-full border border-primary/40">
               <span className="material-symbols-outlined text-primary-container text-sm">verified_user</span>
-              <span className="text-xs font-bold text-white uppercase tracking-wide">AILU · DYFI</span>
+              <span className="text-xs font-bold text-white uppercase tracking-wide">Secure Platform</span>
             </div>
 
             {/* Title */}
@@ -60,6 +60,17 @@ export default function Home() {
               ))}
             </div>
 
+            {/* Track CTA */}
+            <div className="pt-2 w-full flex justify-center lg:justify-start">
+              <a
+                href="/track"
+                className="inline-flex items-center gap-2.5 px-5 py-3 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/40 text-white/70 hover:text-white text-sm font-semibold backdrop-blur-xl transition-all group"
+              >
+                <span className="material-symbols-outlined text-base text-primary group-hover:scale-110 transition-transform">manage_search</span>
+                Already submitted? Track your complaint
+                <span className="material-symbols-outlined text-sm opacity-50">arrow_forward</span>
+              </a>
+            </div>
 
           </div>
 

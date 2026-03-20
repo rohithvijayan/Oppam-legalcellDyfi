@@ -63,7 +63,7 @@ export const dictionaries = {
       partners: {
         label: "NETWORK",
         title: "Solidarity",
-        body: "We are committed to reaching legal assistance to the grassroots through movements like AILU (All India Lawyers Union) and DYFI.",
+        body: "We are committed to reaching legal assistance to the grassroots.",
       },
       contact: {
         title: "Need Help?",
@@ -187,7 +187,7 @@ export const dictionaries = {
       partners: {
         label: "നെറ്റ്‌വർക്ക്",
         title: "ഐക്യദാർഢ്യം",
-        body: "AILU (അഖിലേന്ത്യാ അഭിഭാഷക യൂണിയൻ), DYFI തുടങ്ങിയ പ്രസ്ഥാനങ്ങളുമായി ചേർന്ന് താഴെത്തട്ടിലുള്ളവർക്ക് നിയമസഹായം എത്തിക്കാൻ ഞങ്ങൾ പ്രതിജ്ഞാബദ്ധരാണ്.",
+        body: "താഴെത്തട്ടിലുള്ളവർക്ക് നിയമസഹായം എത്തിക്കാൻ ഞങ്ങൾ പ്രതിജ്ഞാബദ്ധരാണ്.",
       },
       contact: {
         title: "സഹായം വേണോ?",

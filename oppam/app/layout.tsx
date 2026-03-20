@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s | Oppam",
   },
   description:
-    "ഒപ്പം (Oppam) - Free legal support portal for cybercrime victims in Kerala. Report cyber abuse, sexual harassment, and communal threats confidentially. Supported by AILU and DYFI.",
+    "ഒപ്പം (Oppam) - Free legal support portal for cybercrime victims in Kerala. Report cyber abuse, sexual harassment, and communal threats confidentially.",
   keywords: [
     "cyber crime complaint kerala",
     "സൈബർ ക്രൈം പരാതി",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "സൗജന്യ നിയമസഹായം",
     "ഒപ്പം",
     "oppam legal aid",
-    "AILU DYFI",
+    "legal aid platform",
     "cyber harassment complaint",
   ],
   openGraph: {
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     siteName: "ഒപ്പം | Oppam",
     title: "ഒപ്പം - Cyber Neethi Support Portal",
     description:
-      "File a confidential cybercrime complaint online. Free legal support for victims of cyber abuse, sexual harassment, and communal threats. Supported by AILU and DYFI.",
+      "File a confidential cybercrime complaint online. Free legal support for victims of cyber abuse, sexual harassment, and communal threats.",
   },
   robots: {
     index: true,
@@ -58,7 +58,7 @@ export default function RootLayout({
               "@type": "LegalService",
               name: "ഒപ്പം - Oppam Legal Aid",
               description:
-                "Free legal support for cybercrime victims in Kerala, supported by AILU and DYFI.",
+                "Free legal support for cybercrime victims in Kerala.",
               areaServed: { "@type": "State", name: "Kerala" },
               availableLanguage: ["Malayalam", "English"],
               sameAs: [],

@@ -27,6 +27,7 @@ export default function ComplaintForm() {
   const { t, locale } = useLanguage();
   const f = t.home.fields;
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [complaintNumber, setComplaintNumber] = useState<string | null>(null);
   const [evidenceFiles, setEvidenceFiles] = useState<File[]>([]);
   const [fileError, setFileError] = useState("");
 
@@ -55,6 +56,8 @@ export default function ComplaintForm() {
 
       const res = await fetch("/api/complaints", { method: "POST", body: formData });
       if (!res.ok) throw new Error("Failed");
+      const json = await res.json();
+      setComplaintNumber(json.complaint_number ?? null);
       setStatus("success");
       reset();
       setEvidenceFiles([]);
@@ -68,6 +71,56 @@ export default function ComplaintForm() {
   const errorClass = "text-red-400 text-xs mt-1 ml-1 font-medium";
 
   return (
+    <>
+    {/* Fixed bottom toast: success */}
+    {status === "success" && (
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-lg">
+        <div className="bg-slate-900/95 backdrop-blur-2xl border border-green-500/40 rounded-2xl shadow-2xl overflow-hidden">
+          {/* Green top bar */}
+          <div className="h-1 w-full bg-gradient-to-r from-green-500 to-emerald-400" />
+          <div className="p-5 flex flex-col gap-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start gap-3">
+                <span className="material-symbols-outlined text-green-400 text-2xl">check_circle</span>
+                <p className="text-green-300 text-sm font-semibold leading-relaxed">{t.home.submitSuccess}</p>
+              </div>
+              <button onClick={() => setStatus("idle")} className="text-white/30 hover:text-white transition-colors flex-shrink-0">
+                <span className="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+            {complaintNumber && (
+              <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex flex-col gap-1.5">
+                <p className="text-xs text-white/40 uppercase tracking-widest font-bold">Your Complaint Number</p>
+                <p className="text-xl font-black text-white tracking-[0.15em] font-mono">{complaintNumber}</p>
+                <p className="text-xs text-white/30 mt-0.5">
+                  Save this to check your status at{" "}
+                  <a href="/track" className="text-primary underline">oppam.in/track</a>
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Fixed bottom toast: error */}
+    {status === "error" && (
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-lg">
+        <div className="bg-slate-900/95 backdrop-blur-2xl border border-red-500/40 rounded-2xl shadow-2xl overflow-hidden">
+          <div className="h-1 w-full bg-gradient-to-r from-red-500 to-rose-400" />
+          <div className="p-4 flex items-start justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-red-400">error</span>
+              <p className="text-red-300 text-sm font-medium">{t.home.submitError}</p>
+            </div>
+            <button onClick={() => setStatus("idle")} className="text-white/30 hover:text-white transition-colors flex-shrink-0">
+              <span className="material-symbols-outlined text-lg">close</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
     <div className="bg-white/10 backdrop-blur-3xl rounded-2xl p-7 md:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-white/10 group/form" id="form">
       {/* Top accent bar */}
       <div className="h-2 w-full bg-gradient-to-r from-primary to-primary-container rounded-full mb-8 -mt-1 shadow-[0_0_20px_rgba(207,0,0,0.4)]" />
@@ -77,18 +130,6 @@ export default function ComplaintForm() {
         <p className="text-sm text-white/60 font-light">{t.home.formConfidential}</p>
       </div>
 
-      {status === "success" && (
-        <div className="mb-6 p-4 rounded-xl bg-green-500/20 border border-green-500/30 flex items-start gap-3">
-          <span className="material-symbols-outlined text-green-400">check_circle</span>
-          <p className="text-green-200 text-sm font-medium">{t.home.submitSuccess}</p>
-        </div>
-      )}
-      {status === "error" && (
-        <div className="mb-6 p-4 rounded-xl bg-red-500/20 border border-red-500/30 flex items-start gap-3">
-          <span className="material-symbols-outlined text-red-400">error</span>
-          <p className="text-red-200 text-sm font-medium">{t.home.submitError}</p>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Name & Age */}
@@ -226,5 +267,6 @@ export default function ComplaintForm() {
         </p>
       </form>
     </div>
+    </>
   );
 }

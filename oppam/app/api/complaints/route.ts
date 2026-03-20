@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+import { getAdminClient } from "@/lib/supabaseClient";
 import { z } from "zod";
 import { encrypt } from "@/lib/crypto";
 
@@ -58,6 +58,9 @@ export async function POST(req: NextRequest) {
     const evidenceFiles = formData.getAll("evidence") as File[];
     const evidenceUrls: string[] = [];
 
+    // Initialize admin client once for both storage uploads and DB insert
+    const supabaseAdmin = getAdminClient();
+
     for (const file of evidenceFiles) {
       // Strict MIME and size validation
       if (!["image/jpeg", "image/png", "application/pdf", "video/mp4", "video/webm", "video/quicktime"].includes(file.type)) {
@@ -70,7 +73,7 @@ export async function POST(req: NextRequest) {
       const ext = file.type === "application/pdf" ? "pdf" : file.type === "image/png" ? "png" : file.type.startsWith("video/") ? file.type.split("/")[1] : "jpg";
       const fileName = `evidence/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
-      const { error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabaseAdmin.storage
         .from("evidence")
         .upload(fileName, file, { contentType: file.type, upsert: false });
 
@@ -82,8 +85,19 @@ export async function POST(req: NextRequest) {
       evidenceUrls.push(fileName);
     }
 
+    // Generate a unique human-readable complaint number: OPM-YYYY-NNNNN
+    const year = new Date().getFullYear();
+    // Count existing complaints this year to generate sequential number
+    const { count } = await supabaseAdmin
+      .from("complaints")
+      .select("*", { count: "exact", head: true })
+      .gte("created_at", `${year}-01-01T00:00:00.000Z`);
+    const seq = ((count ?? 0) + 1).toString().padStart(5, "0");
+    const complaint_number = `OPM-${year}-${seq}`;
+
     // Insert complaint with encrypted fields at rest
-    const { error: insertError } = await supabase.from("complaints").insert({
+    const { error: insertError } = await supabaseAdmin.from("complaints").insert({
+      complaint_number,
       victim_name: encrypt(victim_name),
       victim_age, // integers remain as is
       address: encrypt(address),
@@ -104,7 +118,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Failed to save complaint" }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true }, { status: 201 });
+    return NextResponse.json({ success: true, complaint_number }, { status: 201 });
   } catch (err) {
     console.error("Unexpected error:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
