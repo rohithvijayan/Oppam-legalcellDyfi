@@ -126,7 +126,7 @@ export default function ComplaintForm() {
       <div className="h-2 w-full bg-gradient-to-r from-primary to-primary-container rounded-full mb-8 -mt-1 shadow-[0_0_20px_rgba(207,0,0,0.4)]" />
 
       <div className="mb-8 text-center sm:text-left">
-        <h2 className="font-headline text-3xl font-[800] text-white mb-2 tracking-tight drop-shadow-sm">{t.home.formTitle}</h2>
+        <h2 className="font-headline text-2xl sm:text-3xl font-[800] text-white mb-2 tracking-tight drop-shadow-sm leading-tight break-words">{t.home.formTitle}</h2>
         <p className="text-sm text-white/60 font-light">{t.home.formConfidential}</p>
       </div>
 

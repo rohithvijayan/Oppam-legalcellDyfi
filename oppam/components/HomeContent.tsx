@@ -39,7 +39,7 @@ export default function HomeContent() {
 
             {/* Title */}
             <div className="flex flex-col items-center lg:items-start w-full">
-              <h1 className="text-[4.7rem] md:text-[5.6rem] lg:text-[6.25rem] font-[900] font-headline text-white leading-[1] tracking-tighter drop-shadow-2xl">
+              <h1 className="text-6xl sm:text-7xl md:text-[5.6rem] lg:text-[6.25rem] font-[900] font-headline text-white leading-[1] tracking-tighter drop-shadow-2xl break-words whitespace-normal">
                 {t.home.heroTitle}
               </h1>
               <div className="h-2 w-32 bg-gradient-to-r from-transparent via-primary to-transparent lg:from-primary lg:to-transparent mt-6 rounded-full" />
