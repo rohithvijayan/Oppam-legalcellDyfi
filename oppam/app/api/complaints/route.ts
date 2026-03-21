@@ -194,7 +194,6 @@ export async function POST(req: NextRequest) {
     console.log(`Complaint ${complaint_number} successfully saved to database.`);
 
     const emailHtml = getComplaintConfirmationEmail(victim_name, complaint_number);
-    const adminEmailHtml = getAdminNotificationEmail(complaint_number, "PENDING", district);
 
     // Ensure emails are sent before finishing (vital for serverless functions)
     console.log(`Attempting to send confirmation email to: ${contact_email}`);
@@ -204,14 +203,45 @@ export async function POST(req: NextRequest) {
     });
     console.log(`Victim email status: ${victimEmailStatus ? "SUCCESS" : "FAILED"}`);
 
-    const adminEmail = process.env.ADMIN_EMAIL || process.env.GMAIL_USER;
-    if (adminEmail) {
-      console.log(`Attempting to send admin alert to: ${adminEmail}`);
-      const adminEmailStatus = await sendEmail(adminEmail, `New Complaint Alert: ${complaint_number}`, adminEmailHtml).catch(err => {
-        console.error("Admin email transport error:", err);
-        return false;
-      });
-      console.log(`Admin email status: ${adminEmailStatus ? "SUCCESS" : "FAILED"}`);
+    // 8. Notify Admins (to all users created in Supabase Auth console)
+    try {
+      // Fetch total stats from DB
+      const { count: totalCount } = await supabaseAdmin
+        .from("complaints")
+        .select("*", { count: "exact", head: true });
+
+      const { count: pendingCount } = await supabaseAdmin
+        .from("complaints")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "PENDING");
+
+      // Fetch all admin users from Supabase Auth
+      const { data: { users: admins }, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+
+      if (listError) {
+        console.error("Failed to list admin users:", listError);
+      } else if (admins && admins.length > 0) {
+        const adminSubject = `New Complaint Alert: ${complaint_number} (${district})`;
+        const adminHtml = getAdminNotificationEmail(
+          complaint_number,
+          "PENDING",
+          district,
+          totalCount || 0,
+          pendingCount || 0
+        );
+
+        // Send to each admin in the list
+        for (const admin of admins) {
+          if (admin.email) {
+            console.log(`Sending notification to admin: ${admin.email}`);
+            await sendEmail(admin.email, adminSubject, adminHtml).catch(err => {
+              console.error(`Error sending email to ${admin.email}:`, err);
+            });
+          }
+        }
+      }
+    } catch (adminEmailErr) {
+      console.error("Error in admin notification loop:", adminEmailErr);
     }
 
     return NextResponse.json({ success: true, complaint_number }, { status: 201 });

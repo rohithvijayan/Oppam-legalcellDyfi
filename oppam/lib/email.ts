@@ -56,19 +56,33 @@ export const getComplaintConfirmationEmail = (victimName: string, complaintNumbe
   `;
 };
 
-export const getAdminNotificationEmail = (complaintNumber: string, status: string, district: string) => {
+export const getAdminNotificationEmail = (complaintNumber: string, status: string, district: string, totalCount: number, pendingCount: number) => {
   return `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
-      <h2 style="color: #cf0000;">New Complaint Received</h2>
-      <p>A new complaint has been submitted on the Oppam Portal.</p>
+      <h2 style="color: #cf0000;">New Complaint Registered</h2>
+      <p>A new complaint has been registered on the Oppam Portal.</p>
+      
       <div style="background-color: #f9fafb; padding: 15px; border-radius: 8px; margin: 20px 0;">
-        <p style="margin: 0; font-size: 14px; color: #6b7280;">Complaint Number</p>
-        <p style="margin: 5px 0; font-size: 18px; font-weight: bold; color: #111827;">${complaintNumber}</p>
-        <p style="margin: 10px 0 0 0; font-size: 14px; color: #6b7280;">District</p>
-        <p style="margin: 5px 0; font-size: 16px; color: #374151;">${district}</p>
-        <p style="margin: 10px 0 0 0; font-size: 14px; color: #6b7280;">Status</p>
-        <p style="margin: 5px 0; font-size: 16px; color: #374151;">${status}</p>
+        <p style="margin: 0; font-size: 14px; color: #6b7280;">Complaint Details</p>
+        <p style="margin: 5px 0; font-size: 16px; font-weight: bold; color: #111827;">ID: ${complaintNumber}</p>
+        <p style="margin: 5px 0; font-size: 14px; color: #374151;">District: ${district}</p>
+        <p style="margin: 5px 0; font-size: 14px; color: #374151;">Status: ${status}</p>
       </div>
+
+      <div style="background-color: #fef2f2; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #fee2e2;">
+        <p style="margin: 0; font-size: 14px; color: #991b1b; font-weight: bold;">Dashboard Stats</p>
+        <div style="display: flex; gap: 20px; margin-top: 10px;">
+          <div>
+            <p style="margin: 0; font-size: 12px; color: #991b1b;">Total Received</p>
+            <p style="margin: 0; font-size: 20px; font-weight: bold; color: #cf0000;">${totalCount}</p>
+          </div>
+          <div style="margin-left: 20px;">
+            <p style="margin: 0; font-size: 12px; color: #991b1b;">Pending Review</p>
+            <p style="margin: 0; font-size: 20px; font-weight: bold; color: #cf0000;">${pendingCount}</p>
+          </div>
+        </div>
+      </div>
+
       <p>Please log in to the admin dashboard to review the case details.</p>
       <a href="https://oppam.online/admin" style="display: inline-block; background-color: #cf0000; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; margin-top: 10px;">Visit Admin Dashboard</a>
     </div>
