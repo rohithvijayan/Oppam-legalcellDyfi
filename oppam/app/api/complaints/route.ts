@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminClient } from "@/lib/supabaseAdmin";
 import { z } from "zod";
 import { encrypt } from "@/lib/crypto";
-import { sendEmail, getComplaintConfirmationEmail } from "@/lib/email";
+import { sendEmail, getComplaintConfirmationEmail, getAdminNotificationEmail } from "@/lib/email";
 
 const schema = z.object({
   victim_name: z.string().min(2).max(200),
@@ -64,10 +64,12 @@ export async function POST(req: NextRequest) {
       });
       verifyData = await verifyResponse.json();
     } catch (fetchErr: any) {
+      console.error("Captcha service fetch error:", fetchErr);
       return NextResponse.json({ error: "Captcha service error" }, { status: 500 });
     }
 
     if (!verifyData.success || (verifyData.score !== undefined && verifyData.score < 0.5)) {
+      console.error("reCAPTCHA Verification Failed:", verifyData);
       return NextResponse.json({ error: "Captcha verification failed" }, { status: 400 });
     }
 
@@ -77,6 +79,7 @@ export async function POST(req: NextRequest) {
     );
     const parsed = schema.safeParse(rawData);
     if (!parsed.success) {
+      console.error("Complaint data validation failed:", parsed.error.flatten());
       return NextResponse.json({ error: "Invalid data", details: parsed.error.flatten() }, { status: 400 });
     }
     const {
@@ -100,9 +103,11 @@ export async function POST(req: NextRequest) {
     for (const file of evidenceFiles) {
       // Strict MIME and size validation
       if (!["image/jpeg", "image/png", "application/pdf", "video/mp4", "video/webm", "video/quicktime"].includes(file.type)) {
+        console.warn(`Invalid file type detected: ${file.type}`);
         return NextResponse.json({ error: "Invalid file type" }, { status: 400 });
       }
       if (file.size > 50 * 1024 * 1024) {
+        console.warn(`File size exceeds limit: ${file.size} bytes`);
         return NextResponse.json({ error: "File exceeds 50MB limit" }, { status: 400 });
       }
 
@@ -152,10 +157,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Failed to save complaint" }, { status: 500 });
     }
 
+    console.log(`Complaint ${complaint_number} successfully saved to database.`);
+
     const emailHtml = getComplaintConfirmationEmail(victim_name, complaint_number);
+    const adminEmailHtml = getAdminNotificationEmail(complaint_number, "PENDING", district);
 
     // Fire and forget (don't block the response)
-    sendEmail(contact_email, "Complaint Received - Oppam", emailHtml).catch(console.error);
+    console.log(`Sending confirmation email to victim: ${contact_email}`);
+    sendEmail(contact_email, "Complaint Received - Oppam", emailHtml).catch(err => console.error("Victim email failed:", err));
+
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.GMAIL_USER;
+    if (adminEmail) {
+      console.log(`Sending admin alert to: ${adminEmail}`);
+      sendEmail(adminEmail, `New Complaint Alert: ${complaint_number}`, adminEmailHtml).catch(err => console.error("Admin email failed:", err));
+    }
 
     return NextResponse.json({ success: true, complaint_number }, { status: 201 });
   } catch (err) {

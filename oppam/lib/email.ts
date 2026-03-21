@@ -21,10 +21,16 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
       subject,
       html,
     });
-    console.log("Email sent: %s", info.messageId);
+    console.log("Email sent successfully to:", to);
     return true;
-  } catch (error) {
-    console.error("Error sending email:", error);
+  } catch (error: any) {
+    console.error("Nodemailer Error Details:", {
+      message: error.message,
+      code: error.code,
+      command: error.command,
+      response: error.response,
+      stack: error.stack
+    });
     return false;
   }
 };
@@ -44,6 +50,25 @@ export const getComplaintConfirmationEmail = (victimName: string, complaintNumbe
       <br/><br/>
       <p style="font-size: 14px; color: #6b7280;">ധൈര്യമായിരിക്കുക. ഈ നിയമപോരാട്ടത്തിൽ ഞങ്ങൾ പൂർണ്ണമായും നിങ്ങൾക്കൊപ്പമുണ്ട്.</p>
       <p style="font-size: 14px; color: #6b7280;"><strong>- ഒപ്പം ലീഗൽ ടീം</strong></p>
+    </div>
+  `;
+};
+
+export const getAdminNotificationEmail = (complaintNumber: string, status: string, district: string) => {
+  return `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+      <h2 style="color: #cf0000;">New Complaint Received</h2>
+      <p>A new complaint has been submitted on the Oppam Portal.</p>
+      <div style="background-color: #f9fafb; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin: 0; font-size: 14px; color: #6b7280;">Complaint Number</p>
+        <p style="margin: 5px 0; font-size: 18px; font-weight: bold; color: #111827;">${complaintNumber}</p>
+        <p style="margin: 10px 0 0 0; font-size: 14px; color: #6b7280;">District</p>
+        <p style="margin: 5px 0; font-size: 16px; color: #374151;">${district}</p>
+        <p style="margin: 10px 0 0 0; font-size: 14px; color: #6b7280;">Status</p>
+        <p style="margin: 5px 0; font-size: 16px; color: #374151;">${status}</p>
+      </div>
+      <p>Please log in to the admin dashboard to review the case details.</p>
+      <a href="https://oppam.online/admin" style="display: inline-block; background-color: #cf0000; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; margin-top: 10px;">Visit Admin Dashboard</a>
     </div>
   `;
 };
