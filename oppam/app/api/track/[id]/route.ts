@@ -17,7 +17,7 @@ export async function GET(
   const supabase = getAdminClient();
   const { data, error } = await supabase
     .from("complaints")
-    .select("complaint_number, status, created_at")
+    .select("complaint_number, status, created_at, admin_notes, location_district")
     .eq("complaint_number", complaintNumber)
     .single();
 
@@ -30,5 +30,7 @@ export async function GET(
     complaint_number: data.complaint_number,
     status: data.status,
     created_at: data.created_at,
+    admin_notes: data.admin_notes,
+    location_district: data.location_district,
   });
 }
