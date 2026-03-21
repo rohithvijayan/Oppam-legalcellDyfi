@@ -49,9 +49,11 @@ export const getComplaintConfirmationEmail = (victimName: string, complaintNumbe
       <p>ഞങ്ങളുടെ നിയമവിദഗ്ധർ നിങ്ങളുടെ പരാതി പരിശോധിച്ച ശേഷം, തുടർനടപടികൾക്കായി ഉടൻ തന്നെ (അല്ലെങ്കിൽ 24 മണിക്കൂറിനുള്ളിൽ) നിങ്ങളെ ബന്ധപ്പെടുന്നതാണ്. അതുവരെ പരാതിയുടെ നിലവിലുള്ള അവസ്ഥ (Status) അറിയാൻ നിങ്ങളുടെ ട്രാക്കിംഗ് നമ്പർ എപ്പോൾ വേണമെങ്കിലും പോർട്ടലിൽ ഉപയോഗിക്കാവുന്നതാണ്.</p>
       <a href="https://oppam.online/track" style="display: inline-block; background-color: #cf0000; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; margin-top: 10px;">പരാതി ട്രാക്ക് ചെയ്യുക</a>
       <br/><br/>
-      <p style="font-size: 14px; color: #6b7280;">​ധൈര്യമായിരിക്കുക. നിങ്ങൾക്ക് ആവശ്യമായ എല്ലാ നിയമസഹായങ്ങളുമായി ഞങ്ങൾ ഒപ്പമുണ്ട്.</p>
-      <p style="font-size: 14px; color: #6b7280;"><strong>സ്നേഹത്തോടെ</strong></p>
-      <p style="font-size: 14px; color: #6b7280;"><strong>ടീം ഒപ്പം</strong></p>
+      <p style="font-size: 14px; color: #6b7280;">​സൈബർ അതിക്രമങ്ങൾക്കെതിരെയുള്ള നിയമപോരാട്ടത്തിൽ ഞങ്ങൾ നിങ്ങൾക്കൊപ്പമുണ്ട്. നിങ്ങൾക്ക് ആവശ്യമായ എല്ലാ നിയമസഹായങ്ങളുമായി ടീം ഒപ്പം മുൻപിലുണ്ടാകും.</p>
+      <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; font-size: 12px; color: #9ca3af;">
+        <p>ഈ സന്ദേശം 'ഒപ്പം' (Oppam) ലീഗൽ സപ്പോർട്ട് പോർട്ടലിൽ നിന്നുള്ളതാണ്. ഇത് ഒരു ഓട്ടോമേറ്റഡ് മെയിൽ ആയതിനാൽ ഇതിലേക്ക് മറുപടി അയക്കേണ്ടതില്ല.</p>
+      </div>
+      <p style="font-size: 14px; color: #6b7280;"><strong>സ്നേഹത്തോടെ,</strong><br/>ടീം ഒപ്പം</p>
     </div>
   `;
 };
@@ -83,8 +85,11 @@ export const getAdminNotificationEmail = (complaintNumber: string, status: strin
         </div>
       </div>
 
-      <p>Please log in to the admin dashboard to review the case details.</p>
-      <a href="https://oppam.online/admin" style="display: inline-block; background-color: #cf0000; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; margin-top: 10px;">Visit Admin Dashboard</a>
+      <p>Please log in to the official admin dashboard to review the case details.</p>
+      <a href="https://oppam.online/admin" style="display: inline-block; background-color: #cf0000; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; margin-top: 10px;">Visit admin.oppam.online</a>
+      <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; font-size: 12px; color: #9ca3af;">
+        <p>This is a secure system notification from the Oppam Portal. Confidentiality must be maintained for all accessed data.</p>
+      </div>
     </div>
   `;
 };
