@@ -23,12 +23,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // RBAC: Check if user email matches authorized admin
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (adminEmail && user.email !== adminEmail) {
-    console.error(`Unauthorized attempt to update complaint by ${user.email}`);
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  // Allowed any authenticated user to access (whitelist in Supabase Auth)
 
   try {
     const body = await req.json();

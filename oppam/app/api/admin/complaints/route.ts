@@ -18,12 +18,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // RBAC: Check if user email matches authorized admin
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (adminEmail && user.email !== adminEmail) {
-    console.error(`Unauthorized access attempt to complaints API by ${user.email}`);
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  // Allowed any authenticated user to access (whitelist in Supabase Auth)
 
   // Fetch from the DB with pagination
   const url = new URL(req.url);

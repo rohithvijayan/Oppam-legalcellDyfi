@@ -24,7 +24,6 @@ export async function middleware(req: NextRequest) {
 
     const { data: { session } } = await supabase.auth.getSession();
     const pathname = req.nextUrl.pathname;
-    const adminEmail = process.env.ADMIN_EMAIL;
 
     // Protect all admin routes (Pages and API)
     if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
