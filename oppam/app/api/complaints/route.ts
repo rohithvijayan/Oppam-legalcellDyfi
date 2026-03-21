@@ -3,21 +3,23 @@ import { getAdminClient } from "@/lib/supabaseAdmin";
 import { z } from "zod";
 import { encrypt } from "@/lib/crypto";
 import { sendEmail, getComplaintConfirmationEmail, getAdminNotificationEmail } from "@/lib/email";
+import { sanitize } from "@/lib/sanitizer";
 
 const schema = z.object({
-  victim_name: z.string().min(2).max(200),
+  victim_name: z.string().trim().min(2).max(200),
   victim_age: z.coerce.number().min(1).max(120),
-  address: z.string().min(5).max(500),
-  contact_phone: z.string().regex(/^\d{10}$/),
-  contact_email: z.string().email().max(300),
-  district: z.string().min(1).max(100),
-  local_body: z.string().min(2).max(200),
-  police_station: z.string().min(2).max(200),
-  victim_social_link: z.string().url().max(500),
-  accused_social_link: z.string().url().max(500),
-  description: z.string().max(2000).optional(),
+  address: z.string().trim().min(5).max(500),
+  contact_phone: z.string().trim().regex(/^\d{10}$/),
+  contact_email: z.string().trim().email().max(300),
+  district: z.string().trim().min(1).max(100),
+  local_body: z.string().trim().min(2).max(200),
+  police_station: z.string().trim().min(2).max(200),
+  victim_social_link: z.string().trim().url().max(500),
+  accused_social_link: z.string().trim().url().max(500),
+  description: z.string().trim().max(2000).optional(),
   consent: z.string().optional(),
-});
+  hp_field: z.string().max(0).optional(), // Honeypot
+}).strict();
 
 // Simple in-memory rate limiter (IP → timestamps)
 const rateLimitMap = new Map<string, number[]>();
@@ -41,6 +43,14 @@ const getClientIp = (req: NextRequest): string => {
 };
 
 export async function POST(req: NextRequest) {
+  // Origin validation to prevent CSRF / cross-site injection
+  const origin = req.headers.get("origin") || req.headers.get("referer");
+  const allowedOrigins = ["https://oppam.online", "https://www.oppam.online", "http://localhost:3000"];
+  if (origin && !allowedOrigins.some(o => origin.startsWith(o))) {
+    console.error("Untrusted origin attempt:", origin);
+    return NextResponse.json({ error: "Access denied" }, { status: 403 });
+  }
+
   // Rate limiting
   const ip = getClientIp(req);
   if (isRateLimited(ip)) {
@@ -82,11 +92,27 @@ export async function POST(req: NextRequest) {
       console.error("Complaint data validation failed:", parsed.error.flatten());
       return NextResponse.json({ error: "Invalid data", details: parsed.error.flatten() }, { status: 400 });
     }
+
+    // Honeypot check
+    if (parsed.data.hp_field) {
+      console.warn("Honeypot triggered from IP:", ip);
+      return NextResponse.json({ error: "Bot detected" }, { status: 403 });
+    }
     const {
-      victim_name, victim_age, address, contact_phone, contact_email,
-      district, local_body, police_station, victim_social_link,
-      accused_social_link, description,
+      victim_name: raw_name, victim_age, address: raw_address, contact_phone, contact_email,
+      district: raw_district, local_body: raw_local_body, police_station: raw_police_station,
+      victim_social_link: raw_victim_social_link, accused_social_link: raw_accused_social_link,
+      description: raw_description,
     } = parsed.data;
+
+    const victim_name = sanitize(raw_name);
+    const address = sanitize(raw_address);
+    const district = sanitize(raw_district);
+    const local_body = sanitize(raw_local_body);
+    const police_station = sanitize(raw_police_station);
+    const victim_social_link = sanitize(raw_victim_social_link);
+    const accused_social_link = sanitize(raw_accused_social_link);
+    const description = raw_description ? sanitize(raw_description) : "";
 
     // Handle evidence uploads
     const evidenceUrls: string[] = [];

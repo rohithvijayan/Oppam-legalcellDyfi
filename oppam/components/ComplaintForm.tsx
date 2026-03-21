@@ -10,18 +10,19 @@ import * as gtag from "@/lib/gtag";
 import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const schema = z.object({
-  victim_name: z.string().min(2, "Name must be at least 2 characters"),
-  victim_age: z.string().regex(/^\d{1,3}$/, "Enter a valid age"),
-  address: z.string().min(5),
-  contact_phone: z.string().regex(/^\d{10}$/, "Must be a 10-digit number"),
-  contact_email: z.string().email(),
-  district: z.string().min(1, "Please select a district"),
-  local_body: z.string().min(2),
-  police_station: z.string().min(2),
-  victim_social_link: z.string().url(),
-  accused_social_link: z.string().url(),
-  description: z.string().optional(),
+  victim_name: z.string().trim().min(2, "Name must be at least 2 characters"),
+  victim_age: z.string().trim().regex(/^\d{1,3}$/, "Enter a valid age"),
+  address: z.string().trim().min(5),
+  contact_phone: z.string().trim().regex(/^\d{10}$/, "Must be a 10-digit number"),
+  contact_email: z.string().trim().email(),
+  district: z.string().trim().min(1, "Please select a district"),
+  local_body: z.string().trim().min(2),
+  police_station: z.string().trim().min(2),
+  victim_social_link: z.string().trim().url(),
+  accused_social_link: z.string().trim().url(),
+  description: z.string().trim().optional(),
   consent: z.boolean().refine((v) => v === true, { message: "You must accept the terms" }),
+  hp_field: z.string().max(0).optional(), // Honeypot
 });
 
 type FormData = z.infer<typeof schema>;
@@ -187,11 +188,16 @@ function ComplaintFormInner() {
 
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Honeypot: Do not remove or style to be visible */}
+          <div className="hidden" aria-hidden="true">
+            <input {...register("hp_field")} tabIndex={-1} autoComplete="off" />
+          </div>
+
           {/* Name & Age */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className={labelClass}>{f.name}</label>
-              <input {...register("victim_name")} type="text" placeholder={f.namePlaceholder} className={inputClass} />
+              <input {...register("victim_name")} type="text" autoComplete="name" placeholder={f.namePlaceholder} className={inputClass} />
               {errors.victim_name && <p className={errorClass}>{errors.victim_name.message}</p>}
             </div>
             <div>
@@ -212,12 +218,12 @@ function ComplaintFormInner() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className={labelClass}>{f.phone}</label>
-              <input {...register("contact_phone")} type="tel" placeholder={f.phonePlaceholder} className={inputClass} />
+              <input {...register("contact_phone")} type="tel" autoComplete="tel" placeholder={f.phonePlaceholder} className={inputClass} />
               {errors.contact_phone && <p className={errorClass}>{errors.contact_phone.message}</p>}
             </div>
             <div>
               <label className={labelClass}>{f.email}</label>
-              <input {...register("contact_email")} type="email" placeholder={f.emailPlaceholder} className={inputClass} />
+              <input {...register("contact_email")} type="email" autoComplete="email" placeholder={f.emailPlaceholder} className={inputClass} />
               {errors.contact_email && <p className={errorClass}>{errors.contact_email.message}</p>}
             </div>
           </div>
