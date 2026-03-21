@@ -41,7 +41,7 @@
     },
     "submitButton": "Submit Request",
     "submitting": "Submitting, please wait...",
-    "submitSuccess": "Your request has been submitted successfully. Our representative will contact you shortly.",
+    "submitSuccess": "Your request has been submitted successfully. A confirmation email has been sent to your address. Our representative will contact you shortly.",
     "submitError": "A technical issue occurred while submitting. Please try again.",
     "trustBadge": "Fully Secure · Highly Confidential · Expert Legal Advice"
   },

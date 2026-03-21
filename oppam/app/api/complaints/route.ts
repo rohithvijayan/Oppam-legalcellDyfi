@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminClient } from "@/lib/supabaseClient";
 import { z } from "zod";
 import { encrypt } from "@/lib/crypto";
+import { sendEmail, getComplaintConfirmationEmail } from "@/lib/email";
 
 const schema = z.object({
   victim_name: z.string().min(2).max(200),
@@ -147,6 +148,11 @@ export async function POST(req: NextRequest) {
       console.error("Insert error:", insertError);
       return NextResponse.json({ error: "Failed to save complaint" }, { status: 500 });
     }
+
+    const emailHtml = getComplaintConfirmationEmail(victim_name, complaint_number);
+
+    // Fire and forget (don't block the response)
+    sendEmail(contact_email, "Complaint Received - Oppam", emailHtml).catch(console.error);
 
     return NextResponse.json({ success: true, complaint_number }, { status: 201 });
   } catch (err) {
