@@ -49,7 +49,6 @@ export const getComplaintConfirmationEmail = (victimName: string, complaintNumbe
       <p>ഞങ്ങളുടെ നിയമവിദഗ്ധർ നിങ്ങളുടെ പരാതി പരിശോധിച്ച ശേഷം, തുടർനടപടികൾക്കായി ഉടൻ തന്നെ (അല്ലെങ്കിൽ 24 മണിക്കൂറിനുള്ളിൽ) നിങ്ങളെ ബന്ധപ്പെടുന്നതാണ്. അതുവരെ പരാതിയുടെ നിലവിലുള്ള അവസ്ഥ (Status) അറിയാൻ നിങ്ങളുടെ ട്രാക്കിംഗ് നമ്പർ ഉപയോഗിച്ച് <strong>oppam.online</strong> വെബ്സൈറ്റിലെ ട്രാക്കിംഗ് ഫീച്ചർ (Track feature) ഉപയോഗിക്കാവുന്നതാണ്.</p>
       <br/><br/>
       <p style="font-size: 14px; color: #6b7280;">​ധൈര്യമായിരിക്കുക. നിങ്ങൾക്ക് ആവശ്യമായ എല്ലാ നിയമസഹായങ്ങളുമായി ഞങ്ങൾ ഒപ്പമുണ്ട്.</p>
-      <p style="font-size: 14px; color: #6b7280;"><strong>സ്നേഹത്തോടെ,</strong><br/>സ്നേഹത്തോടെ</p>
       <p style="font-size: 14px; color: #6b7280;"><strong>സ്നേഹത്തോടെ,</strong><br/>ടീം ഒപ്പം</p>
     </div>
   `;
