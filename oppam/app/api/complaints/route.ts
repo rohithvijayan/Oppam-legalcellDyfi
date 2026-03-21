@@ -119,12 +119,10 @@ export async function POST(req: NextRequest) {
     // Generate a unique human-readable complaint number: OPM-YYYY-NNNNN
     const year = new Date().getFullYear();
     // Count existing complaints this year to generate sequential number
-    const { count } = await supabaseAdmin
-      .from("complaints")
-      .select("*", { count: "exact", head: true })
-      .gte("created_at", `${year}-01-01T00:00:00.000Z`);
-    const seq = ((count ?? 0) + 1).toString().padStart(5, "0");
-    const complaint_number = `OPM-${year}-${seq}`;
+    // Generate a unique random complaint number: OPM-XXXX-XXXX
+    const randomBytes = Math.random().toString(36).slice(2, 6).toUpperCase();
+    const randomBytes2 = Math.random().toString(36).slice(2, 6).toUpperCase();
+    const complaint_number = `OPM-${randomBytes}-${randomBytes2}`;
 
     // Insert complaint with encrypted fields at rest
     const { error: insertError } = await supabaseAdmin.from("complaints").insert({

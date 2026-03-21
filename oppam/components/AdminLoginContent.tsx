@@ -62,7 +62,7 @@ export default function AdminLoginContent() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={inputClass}
-                placeholder="admin@oppam.org"
+                placeholder="email@example.com"
               />
             </div>
             <div>

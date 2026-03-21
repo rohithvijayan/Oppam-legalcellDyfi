@@ -17,7 +17,7 @@ export async function GET(
   const supabase = getAdminClient();
   const { data, error } = await supabase
     .from("complaints")
-    .select("complaint_number, status, admin_notes, created_at, location_district")
+    .select("complaint_number, status, created_at")
     .eq("complaint_number", complaintNumber)
     .single();
 
@@ -29,8 +29,6 @@ export async function GET(
   return NextResponse.json({
     complaint_number: data.complaint_number,
     status: data.status,
-    admin_notes: data.admin_notes,
     created_at: data.created_at,
-    location_district: data.location_district,
   });
 }
