@@ -84,7 +84,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ml">
+    <html lang="ml" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#cf0000" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -119,7 +119,7 @@ export default function RootLayout({
           <GoogleAnalytics />
         </Suspense>
       </head>
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col" suppressHydrationWarning>
         <LanguageProvider>
           <Navbar />
           <main className="flex-1">{children}</main>

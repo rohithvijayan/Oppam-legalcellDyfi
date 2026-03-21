@@ -31,6 +31,8 @@ export default function Footer() {
                 <li><Link href="/" className="hover:text-primary transition-colors">{t.nav.home}</Link></li>
                 <li><Link href="/about" className="hover:text-primary transition-colors">{t.nav.about}</Link></li>
                 <li><Link href="/track" className="hover:text-primary transition-colors">Track Complaint</Link></li>
+                <li><Link href="/privacy" className="hover:text-primary transition-colors">{t.footer.privacy}</Link></li>
+                <li><Link href="/terms" className="hover:text-primary transition-colors">{t.footer.terms}</Link></li>
               </ul>
             </div>
           </div>
