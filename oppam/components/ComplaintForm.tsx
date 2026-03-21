@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import * as fpixel from "@/lib/fpixel";
 import * as gtag from "@/lib/gtag";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const schema = z.object({
   victim_name: z.string().min(2, "Name must be at least 2 characters"),
@@ -32,6 +33,7 @@ export default function ComplaintForm() {
   const [complaintNumber, setComplaintNumber] = useState<string | null>(null);
   const [evidenceFiles, setEvidenceFiles] = useState<File[]>([]);
   const [fileError, setFileError] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -55,6 +57,13 @@ export default function ComplaintForm() {
       const formData = new FormData();
       Object.entries(data).forEach(([k, v]) => formData.append(k, String(v)));
       evidenceFiles.forEach(f => formData.append("evidence", f));
+
+      if (!captchaToken) {
+        setFileError(locale === 'ml' ? "ദയവായി സുരക്ഷാ പരിശോധന പൂർത്തിയാക്കുക" : "Please complete the security check");
+        setStatus("idle");
+        return;
+      }
+      formData.append("captcha_token", captchaToken);
 
       const res = await fetch("/api/complaints", { method: "POST", body: formData });
       if (!res.ok) throw new Error("Failed");
@@ -80,201 +89,210 @@ export default function ComplaintForm() {
 
   return (
     <>
-    {/* Fixed bottom toast: success */}
-    {status === "success" && (
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-lg">
-        <div className="bg-slate-900/95 backdrop-blur-2xl border border-green-500/40 rounded-2xl shadow-2xl overflow-hidden">
-          {/* Green top bar */}
-          <div className="h-1 w-full bg-gradient-to-r from-green-500 to-emerald-400" />
-          <div className="p-5 flex flex-col gap-3">
-            <div className="flex items-start justify-between gap-3">
+      {/* Fixed bottom toast: success */}
+      {status === "success" && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-lg">
+          <div className="bg-slate-900/95 backdrop-blur-2xl border border-green-500/40 rounded-2xl shadow-2xl overflow-hidden">
+            {/* Green top bar */}
+            <div className="h-1 w-full bg-gradient-to-r from-green-500 to-emerald-400" />
+            <div className="p-5 flex flex-col gap-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3">
+                  <span className="material-symbols-outlined text-green-400 text-2xl">check_circle</span>
+                  <p className="text-green-300 text-sm font-semibold leading-relaxed">{t.home.submitSuccess}</p>
+                </div>
+                <button onClick={() => setStatus("idle")} className="text-white/30 hover:text-white transition-colors flex-shrink-0">
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
+              </div>
+              {complaintNumber && (
+                <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex flex-col gap-1.5">
+                  <p className="text-xs text-white/40 uppercase tracking-widest font-bold">Your Complaint Number</p>
+                  <p className="text-xl font-black text-white tracking-[0.15em] font-mono">{complaintNumber}</p>
+                  <p className="text-xs text-white/30 mt-0.5">
+                    Save this to check your status at{" "}
+                    <a href="/track" className="text-primary underline">oppam.in/track</a>
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Fixed bottom toast: error */}
+      {status === "error" && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-lg">
+          <div className="bg-slate-900/95 backdrop-blur-2xl border border-red-500/40 rounded-2xl shadow-2xl overflow-hidden">
+            <div className="h-1 w-full bg-gradient-to-r from-red-500 to-rose-400" />
+            <div className="p-4 flex items-start justify-between gap-3">
               <div className="flex items-start gap-3">
-                <span className="material-symbols-outlined text-green-400 text-2xl">check_circle</span>
-                <p className="text-green-300 text-sm font-semibold leading-relaxed">{t.home.submitSuccess}</p>
+                <span className="material-symbols-outlined text-red-400">error</span>
+                <p className="text-red-300 text-sm font-medium">{t.home.submitError}</p>
               </div>
               <button onClick={() => setStatus("idle")} className="text-white/30 hover:text-white transition-colors flex-shrink-0">
                 <span className="material-symbols-outlined text-lg">close</span>
               </button>
             </div>
-            {complaintNumber && (
-              <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex flex-col gap-1.5">
-                <p className="text-xs text-white/40 uppercase tracking-widest font-bold">Your Complaint Number</p>
-                <p className="text-xl font-black text-white tracking-[0.15em] font-mono">{complaintNumber}</p>
-                <p className="text-xs text-white/30 mt-0.5">
-                  Save this to check your status at{" "}
-                  <a href="/track" className="text-primary underline">oppam.in/track</a>
-                </p>
-              </div>
-            )}
           </div>
         </div>
-      </div>
-    )}
+      )}
 
-    {/* Fixed bottom toast: error */}
-    {status === "error" && (
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-lg">
-        <div className="bg-slate-900/95 backdrop-blur-2xl border border-red-500/40 rounded-2xl shadow-2xl overflow-hidden">
-          <div className="h-1 w-full bg-gradient-to-r from-red-500 to-rose-400" />
-          <div className="p-4 flex items-start justify-between gap-3">
-            <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined text-red-400">error</span>
-              <p className="text-red-300 text-sm font-medium">{t.home.submitError}</p>
+      <div className="bg-white/10 backdrop-blur-3xl rounded-2xl p-7 md:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-white/10 group/form" id="form">
+        {/* Top accent bar */}
+        <div className="h-2 w-full bg-gradient-to-r from-primary to-primary-container rounded-full mb-8 -mt-1 shadow-[0_0_20px_rgba(207,0,0,0.4)]" />
+
+        <div className="mb-8 text-center sm:text-left">
+          <h2 className="font-headline text-2xl sm:text-3xl font-[800] text-white mb-2 tracking-tight drop-shadow-sm leading-tight break-words">{t.home.formTitle}</h2>
+          <p className="text-sm text-white/60 font-light">{t.home.formConfidential}</p>
+        </div>
+
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Name & Age */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label className={labelClass}>{f.name}</label>
+              <input {...register("victim_name")} type="text" placeholder={f.namePlaceholder} className={inputClass} />
+              {errors.victim_name && <p className={errorClass}>{errors.victim_name.message}</p>}
             </div>
-            <button onClick={() => setStatus("idle")} className="text-white/30 hover:text-white transition-colors flex-shrink-0">
-              <span className="material-symbols-outlined text-lg">close</span>
-            </button>
+            <div>
+              <label className={labelClass}>{f.age}</label>
+              <input {...register("victim_age")} type="number" min={1} max={120} placeholder={f.agePlaceholder} className={inputClass} />
+              {errors.victim_age && <p className={errorClass}>{errors.victim_age.message}</p>}
+            </div>
           </div>
-        </div>
-      </div>
-    )}
 
-    <div className="bg-white/10 backdrop-blur-3xl rounded-2xl p-7 md:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-white/10 group/form" id="form">
-      {/* Top accent bar */}
-      <div className="h-2 w-full bg-gradient-to-r from-primary to-primary-container rounded-full mb-8 -mt-1 shadow-[0_0_20px_rgba(207,0,0,0.4)]" />
-
-      <div className="mb-8 text-center sm:text-left">
-        <h2 className="font-headline text-2xl sm:text-3xl font-[800] text-white mb-2 tracking-tight drop-shadow-sm leading-tight break-words">{t.home.formTitle}</h2>
-        <p className="text-sm text-white/60 font-light">{t.home.formConfidential}</p>
-      </div>
-
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Name & Age */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Address */}
           <div>
-            <label className={labelClass}>{f.name}</label>
-            <input {...register("victim_name")} type="text" placeholder={f.namePlaceholder} className={inputClass} />
-            {errors.victim_name && <p className={errorClass}>{errors.victim_name.message}</p>}
+            <label className={labelClass}>{f.address}</label>
+            <textarea {...register("address")} rows={2} placeholder={f.addressPlaceholder} className={inputClass} />
+            {errors.address && <p className={errorClass}>{errors.address.message}</p>}
           </div>
-          <div>
-            <label className={labelClass}>{f.age}</label>
-            <input {...register("victim_age")} type="number" min={1} max={120} placeholder={f.agePlaceholder} className={inputClass} />
-            {errors.victim_age && <p className={errorClass}>{errors.victim_age.message}</p>}
-          </div>
-        </div>
 
-        {/* Address */}
-        <div>
-          <label className={labelClass}>{f.address}</label>
-          <textarea {...register("address")} rows={2} placeholder={f.addressPlaceholder} className={inputClass} />
-          {errors.address && <p className={errorClass}>{errors.address.message}</p>}
-        </div>
+          {/* Phone & Email */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label className={labelClass}>{f.phone}</label>
+              <input {...register("contact_phone")} type="tel" placeholder={f.phonePlaceholder} className={inputClass} />
+              {errors.contact_phone && <p className={errorClass}>{errors.contact_phone.message}</p>}
+            </div>
+            <div>
+              <label className={labelClass}>{f.email}</label>
+              <input {...register("contact_email")} type="email" placeholder={f.emailPlaceholder} className={inputClass} />
+              {errors.contact_email && <p className={errorClass}>{errors.contact_email.message}</p>}
+            </div>
+          </div>
 
-        {/* Phone & Email */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* District */}
           <div>
-            <label className={labelClass}>{f.phone}</label>
-            <input {...register("contact_phone")} type="tel" placeholder={f.phonePlaceholder} className={inputClass} />
-            {errors.contact_phone && <p className={errorClass}>{errors.contact_phone.message}</p>}
+            <label className={labelClass}>{f.district}</label>
+            <div className="relative">
+              <select {...register("district")} className={`${inputClass} appearance-none cursor-pointer pr-10`}>
+                <option value="" className="bg-slate-900">{f.districtPlaceholder}</option>
+                {t.districts.map((d) => (
+                  <option key={d} value={d} className="bg-slate-900">{d}</option>
+                ))}
+              </select>
+              <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none">expand_more</span>
+            </div>
+            {errors.district && <p className={errorClass}>{errors.district.message}</p>}
           </div>
-          <div>
-            <label className={labelClass}>{f.email}</label>
-            <input {...register("contact_email")} type="email" placeholder={f.emailPlaceholder} className={inputClass} />
-            {errors.contact_email && <p className={errorClass}>{errors.contact_email.message}</p>}
-          </div>
-        </div>
 
-        {/* District */}
-        <div>
-          <label className={labelClass}>{f.district}</label>
-          <div className="relative">
-            <select {...register("district")} className={`${inputClass} appearance-none cursor-pointer pr-10`}>
-              <option value="" className="bg-slate-900">{f.districtPlaceholder}</option>
-              {t.districts.map((d) => (
-                <option key={d} value={d} className="bg-slate-900">{d}</option>
-              ))}
-            </select>
-            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none">expand_more</span>
+          {/* Local Body & Police Station */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label className={labelClass}>{f.localBody}</label>
+              <input {...register("local_body")} type="text" placeholder={f.localBodyPlaceholder} className={inputClass} />
+              {errors.local_body && <p className={errorClass}>{errors.local_body.message}</p>}
+            </div>
+            <div>
+              <label className={labelClass}>{f.policeStation}</label>
+              <input {...register("police_station")} type="text" placeholder={f.policeStationPlaceholder} className={inputClass} />
+              {errors.police_station && <p className={errorClass}>{errors.police_station.message}</p>}
+            </div>
           </div>
-          {errors.district && <p className={errorClass}>{errors.district.message}</p>}
-        </div>
 
-        {/* Local Body & Police Station */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label className={labelClass}>{f.localBody}</label>
-            <input {...register("local_body")} type="text" placeholder={f.localBodyPlaceholder} className={inputClass} />
-            {errors.local_body && <p className={errorClass}>{errors.local_body.message}</p>}
+          {/* Social Links */}
+          <div className="space-y-6">
+            <div>
+              <label className={labelClass}>{f.victimSocialLink}</label>
+              <input {...register("victim_social_link")} type="url" placeholder={f.victimSocialLinkPlaceholder} className={inputClass} />
+              {errors.victim_social_link && <p className={errorClass}>{errors.victim_social_link.message}</p>}
+            </div>
+            <div>
+              <label className={labelClass}>{f.accusedSocialLink}</label>
+              <input {...register("accused_social_link")} type="url" placeholder={f.accusedSocialLinkPlaceholder} className={inputClass} />
+              {errors.accused_social_link && <p className={errorClass}>{errors.accused_social_link.message}</p>}
+            </div>
           </div>
-          <div>
-            <label className={labelClass}>{f.policeStation}</label>
-            <input {...register("police_station")} type="text" placeholder={f.policeStationPlaceholder} className={inputClass} />
-            {errors.police_station && <p className={errorClass}>{errors.police_station.message}</p>}
-          </div>
-        </div>
 
-        {/* Social Links */}
-        <div className="space-y-6">
+          {/* Evidence Upload */}
           <div>
-            <label className={labelClass}>{f.victimSocialLink}</label>
-            <input {...register("victim_social_link")} type="url" placeholder={f.victimSocialLinkPlaceholder} className={inputClass} />
-            {errors.victim_social_link && <p className={errorClass}>{errors.victim_social_link.message}</p>}
+            <label className={labelClass}>{f.evidence}</label>
+            <div className="relative border-2 border-dashed border-white/10 rounded-xl p-10 text-center bg-white/5 hover:bg-white/10 transition-all cursor-pointer group/upload backdrop-blur-xl">
+              <span className="material-symbols-outlined text-4xl text-primary/40 group-hover/upload:text-primary transition-all block mb-3">cloud_upload</span>
+              <p className="text-sm font-semibold text-white/80">
+                {evidenceFiles.length > 0 ? `${evidenceFiles.length} file(s) selected` : f.evidence}
+              </p>
+              <p className="text-xs text-white/40 mt-1.5">{f.evidenceDesc}</p>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,application/pdf,video/mp4,video/webm,video/quicktime"
+                multiple
+                onChange={handleFileChange}
+                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+              />
+            </div>
+            {fileError && <p className={errorClass}>{fileError}</p>}
           </div>
-          <div>
-            <label className={labelClass}>{f.accusedSocialLink}</label>
-            <input {...register("accused_social_link")} type="url" placeholder={f.accusedSocialLinkPlaceholder} className={inputClass} />
-            {errors.accused_social_link && <p className={errorClass}>{errors.accused_social_link.message}</p>}
-          </div>
-        </div>
 
-        {/* Evidence Upload */}
-        <div>
-          <label className={labelClass}>{f.evidence}</label>
-          <div className="relative border-2 border-dashed border-white/10 rounded-xl p-10 text-center bg-white/5 hover:bg-white/10 transition-all cursor-pointer group/upload backdrop-blur-xl">
-            <span className="material-symbols-outlined text-4xl text-primary/40 group-hover/upload:text-primary transition-all block mb-3">cloud_upload</span>
-            <p className="text-sm font-semibold text-white/80">
-              {evidenceFiles.length > 0 ? `${evidenceFiles.length} file(s) selected` : f.evidence}
-            </p>
-            <p className="text-xs text-white/40 mt-1.5">{f.evidenceDesc}</p>
+          {/* Description */}
+          <div>
+            <label className={labelClass}>{f.description}</label>
+            <textarea {...register("description")} rows={4} placeholder={f.descriptionPlaceholder} className={inputClass} />
+          </div>
+
+          {/* Consent */}
+          <div className="flex items-start gap-4 p-1">
             <input
-              type="file"
-              accept="image/jpeg,image/png,application/pdf,video/mp4,video/webm,video/quicktime"
-              multiple
-              onChange={handleFileChange}
-              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+              {...register("consent")}
+              type="checkbox"
+              id="consent"
+              className="mt-1 w-5 h-5 rounded border-white/20 bg-white/10 text-primary focus:ring-primary accent-primary cursor-pointer transition-all"
+            />
+            <label htmlFor="consent" className="text-xs text-white/60 leading-relaxed cursor-pointer select-none">
+              {f.consent}
+            </label>
+          </div>
+          {errors.consent && <p className={errorClass}>{errors.consent.message}</p>}
+
+          {/* ReCAPTCHA */}
+          <div className="flex justify-center sm:justify-start">
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"} // Test key
+              onChange={(token) => setCaptchaToken(token)}
+              theme="dark"
             />
           </div>
-          {fileError && <p className={errorClass}>{fileError}</p>}
-        </div>
 
-        {/* Description */}
-        <div>
-          <label className={labelClass}>{f.description}</label>
-          <textarea {...register("description")} rows={4} placeholder={f.descriptionPlaceholder} className={inputClass} />
-        </div>
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={status === "submitting"}
+            className="w-full py-5 rounded-xl bg-gradient-to-r from-primary to-primary-container text-white font-[800] text-lg shadow-[0_15px_40px_rgba(207,0,0,0.3)] hover:shadow-[0_20px_50px_rgba(207,0,0,0.5)] hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed group/btn"
+          >
+            <span className="material-symbols-outlined text-xl group-hover/btn:translate-x-1 transition-transform">send</span>
+            {status === "submitting" ? t.home.submitting : t.home.submitButton}
+          </button>
 
-        {/* Consent */}
-        <div className="flex items-start gap-4 p-1">
-          <input
-            {...register("consent")}
-            type="checkbox"
-            id="consent"
-            className="mt-1 w-5 h-5 rounded border-white/20 bg-white/10 text-primary focus:ring-primary accent-primary cursor-pointer transition-all"
-          />
-          <label htmlFor="consent" className="text-xs text-white/60 leading-relaxed cursor-pointer select-none">
-            {f.consent}
-          </label>
-        </div>
-        {errors.consent && <p className={errorClass}>{errors.consent.message}</p>}
-
-        {/* Submit */}
-        <button
-          type="submit"
-          disabled={status === "submitting"}
-          className="w-full py-5 rounded-xl bg-gradient-to-r from-primary to-primary-container text-white font-[800] text-lg shadow-[0_15px_40px_rgba(207,0,0,0.3)] hover:shadow-[0_20px_50px_rgba(207,0,0,0.5)] hover:-translate-y-1 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed group/btn"
-        >
-          <span className="material-symbols-outlined text-xl group-hover/btn:translate-x-1 transition-transform">send</span>
-          {status === "submitting" ? t.home.submitting : t.home.submitButton}
-        </button>
-
-        {/* Trust bar */}
-        <p className="text-xs text-center text-white/30 pt-2 flex items-center justify-center gap-2 font-light">
-          <span className="material-symbols-outlined text-base">verified</span>
-          {t.home.trustBadge}
-        </p>
-      </form>
-    </div>
+          {/* Trust bar */}
+          <p className="text-xs text-center text-white/30 pt-2 flex items-center justify-center gap-2 font-light">
+            <span className="material-symbols-outlined text-base">verified</span>
+            {t.home.trustBadge}
+          </p>
+        </form>
+      </div>
     </>
   );
 }

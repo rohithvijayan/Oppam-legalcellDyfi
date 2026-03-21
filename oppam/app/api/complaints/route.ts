@@ -46,7 +46,29 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Too many requests. Try again later." }, { status: 429 });
   }
 
-  try {    const formData = await req.formData();
+  try {
+    const formData = await req.formData();
+    const captchaToken = formData.get("captcha_token") as string;
+
+    if (!captchaToken) {
+      return NextResponse.json({ error: "Captcha verification required" }, { status: 400 });
+    }
+
+    let verifyData;
+    try {
+      const verifyResponse = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `secret=${process.env.RECAPTCHA_SECRET_KEY || "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"}&response=${captchaToken}`,
+      });
+      verifyData = await verifyResponse.json();
+    } catch (fetchErr: any) {
+      return NextResponse.json({ error: "Captcha service error" }, { status: 500 });
+    }
+
+    if (!verifyData.success) {
+      return NextResponse.json({ error: "Captcha verification failed" }, { status: 400 });
+    }
 
     // Extract and validate text fields
     const rawData = Object.fromEntries(
