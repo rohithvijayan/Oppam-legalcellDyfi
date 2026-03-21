@@ -19,6 +19,8 @@ const schema = z.object({
   description: z.string().trim().max(2000).optional(),
   consent: z.string().optional(),
   hp_field: z.string().max(0).optional(), // Honeypot
+  evidence_paths: z.array(z.string()).optional(),
+  captcha_token: z.string().min(1),
 }).strict();
 
 // Simple in-memory rate limiter (IP → timestamps)
@@ -84,9 +86,15 @@ export async function POST(req: NextRequest) {
     }
 
     // Extract and validate text fields
-    const rawData = Object.fromEntries(
-      [...formData.entries()].filter(([, v]) => typeof v === "string")
-    );
+    const rawData: any = {};
+    formData.forEach((value, key) => {
+      if (key === "evidence_paths") {
+        if (!rawData[key]) rawData[key] = [];
+        rawData[key].push(value);
+      } else if (typeof value === "string") {
+        rawData[key] = value;
+      }
+    });
     const parsed = schema.safeParse(rawData);
     if (!parsed.success) {
       console.error("Complaint data validation failed:", parsed.error.flatten());
