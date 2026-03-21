@@ -8,9 +8,15 @@ export const metadata: Metadata = {
     canonical: "/track",
   },
   openGraph: {
-    title: "ലോഗിൻ സ്റ്റാറ്റസ് | Track Complaint - Oppam",
-    description: "Check the status of your reported cybercrime securely.",
+    title: "പരാതി ട്രാക്ക് ചെയ്യുക | Track Complaint - Oppam",
+    description: "Check the status of your cybercrime complaint securely on the Oppam official portal.",
     url: "https://oppam.online/track",
+    siteName: "Oppam Legal Support",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

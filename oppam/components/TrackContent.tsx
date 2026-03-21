@@ -103,9 +103,13 @@ export default function TrackContent() {
               <span className="material-symbols-outlined text-3xl text-primary">manage_search</span>
             </div>
             <h1 className="text-3xl font-black text-white mb-2">Track Your Complaint</h1>
-            <p className="text-white/40 text-sm">
+            <p className="text-white/40 text-sm mb-4">
               Enter the complaint number you received after submitting your complaint.
             </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-widest">
+              <span className="material-symbols-outlined text-[14px]">verified_user</span>
+              Secure Legal Portal
+            </div>
           </div>
 
           {/* Search card */}
