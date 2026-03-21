@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Captcha service error" }, { status: 500 });
     }
 
-    if (!verifyData.success) {
+    if (!verifyData.success || (verifyData.score !== undefined && verifyData.score < 0.5)) {
       return NextResponse.json({ error: "Captcha verification failed" }, { status: 400 });
     }
 

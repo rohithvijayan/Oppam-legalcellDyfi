@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import * as fpixel from "@/lib/fpixel";
 import * as gtag from "@/lib/gtag";
-import ReCAPTCHA from "react-google-recaptcha";
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const schema = z.object({
   victim_name: z.string().min(2, "Name must be at least 2 characters"),
@@ -26,14 +26,14 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function ComplaintForm() {
+function ComplaintFormInner() {
   const { t, locale } = useLanguage();
   const f = t.home.fields;
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [complaintNumber, setComplaintNumber] = useState<string | null>(null);
   const [evidenceFiles, setEvidenceFiles] = useState<File[]>([]);
   const [fileError, setFileError] = useState("");
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -52,18 +52,20 @@ export default function ComplaintForm() {
   };
 
   const onSubmit = async (data: FormData) => {
+    if (!executeRecaptcha) {
+      console.error("Execute recaptcha not yet available");
+      setStatus("error");
+      return;
+    }
+
     setStatus("submitting");
     try {
+      const captcha_token = await executeRecaptcha("complaint_submission");
+
       const formData = new FormData();
       Object.entries(data).forEach(([k, v]) => formData.append(k, String(v)));
       evidenceFiles.forEach(f => formData.append("evidence", f));
-
-      if (!captchaToken) {
-        setFileError(locale === 'ml' ? "ദയവായി സുരക്ഷാ പരിശോധന പൂർത്തിയാക്കുക" : "Please complete the security check");
-        setStatus("idle");
-        return;
-      }
-      formData.append("captcha_token", captchaToken);
+      formData.append("captcha_token", captcha_token);
 
       const res = await fetch("/api/complaints", { method: "POST", body: formData });
       if (!res.ok) throw new Error("Failed");
@@ -267,15 +269,6 @@ export default function ComplaintForm() {
           </div>
           {errors.consent && <p className={errorClass}>{errors.consent.message}</p>}
 
-          {/* ReCAPTCHA */}
-          <div className="flex justify-center sm:justify-start">
-            <ReCAPTCHA
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"} // Test key
-              onChange={(token) => setCaptchaToken(token)}
-              theme="dark"
-            />
-          </div>
-
           {/* Submit */}
           <button
             type="submit"
@@ -296,3 +289,15 @@ export default function ComplaintForm() {
     </>
   );
 }
+
+export default function ComplaintForm() {
+  return (
+    <GoogleReCaptchaProvider
+      reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
+      language="ml"
+    >
+      <ComplaintFormInner />
+    </GoogleReCaptchaProvider>
+  );
+}
+
