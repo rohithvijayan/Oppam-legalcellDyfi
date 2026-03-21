@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAdminClient } from "@/lib/supabaseClient";
+import { getAdminClient } from "@/lib/supabaseAdmin";
 import { decrypt } from "@/lib/crypto";
 
 export async function GET(req: NextRequest) {
@@ -8,21 +8,34 @@ export async function GET(req: NextRequest) {
   if (!authHeader) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  
+
   const token = authHeader.replace("Bearer ", "");
   const supabaseAdmin = getAdminClient();
-  
+
   // Verify user is authentically logged in
   const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
   if (authError || !user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Fetch from the DB
-  const { data, error } = await supabaseAdmin
+  // RBAC: Check if user email matches authorized admin
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (adminEmail && user.email !== adminEmail) {
+    console.error(`Unauthorized access attempt to complaints API by ${user.email}`);
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  // Fetch from the DB with pagination
+  const url = new URL(req.url);
+  const page = parseInt(url.searchParams.get("page") || "1");
+  const limit = parseInt(url.searchParams.get("limit") || "20");
+  const offset = (page - 1) * limit;
+
+  const { data, error, count } = await supabaseAdmin
     .from("complaints")
-    .select("*")
-    .order("created_at", { ascending: false });
+    .select("*", { count: "exact" })
+    .order("created_at", { ascending: false })
+    .range(offset, offset + limit - 1);
 
   if (error || !data) {
     return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
@@ -40,5 +53,9 @@ export async function GET(req: NextRequest) {
     description: c.description ? decrypt(c.description) : null,
   }));
 
-  return NextResponse.json(decryptedData);
+  return NextResponse.json({
+    complaints: decryptedData,
+    total: count || 0,
+    hasMore: (count || 0) > offset + limit,
+  });
 }

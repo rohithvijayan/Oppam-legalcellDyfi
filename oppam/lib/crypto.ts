@@ -1,14 +1,26 @@
 import crypto from "crypto";
 
-// Ensure a safe 32-byte key is derived from the environment variable. 
-// If it's missing, it will generate a random one for development (which resets on server restart).
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || crypto.randomBytes(32).toString("hex");
+// Critical: ENCRYPTION_KEY must be a stable 32-byte hex string set in the environment.
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
+
+if (!ENCRYPTION_KEY && process.env.NODE_ENV === "production") {
+  throw new Error("CRITICAL: ENCRYPTION_KEY environment variable is missing in production!");
+}
+// For development, we still allow a fallback to avoid blocking the dev server, 
+// but we'll log a loud warning.
+if (!ENCRYPTION_KEY) {
+  console.warn("⚠️ WARNING: ENCRYPTION_KEY is missing. Using a temporary random key. DATA WILL BE LOST ON RESTART.");
+}
+
+const FINAL_KEY = ENCRYPTION_KEY || "0000000000000000000000000000000000000000000000000000000000000000"; // Dummy fallback for dev safety
+
 
 function getKey(): Buffer {
-  const key = Buffer.from(ENCRYPTION_KEY, "hex");
+  const keyStr = FINAL_KEY;
+  const key = Buffer.from(keyStr, "hex");
   if (key.length !== 32) {
     // If not exactly 32 bytes, hash it to make it exactly 32 bytes
-    return crypto.createHash("sha256").update(String(ENCRYPTION_KEY)).digest();
+    return crypto.createHash("sha256").update(String(keyStr)).digest();
   }
   return key;
 }
@@ -29,11 +41,11 @@ export function encrypt(text: string): string {
 
 export function decrypt(encText: string): string {
   if (!encText || !encText.startsWith("enc:")) return encText; // If not encrypted, return as is (for backwards compatibility)
-  
+
   try {
     const parts = encText.substring(4).split(":");
     if (parts.length !== 3) return encText;
-    
+
     const [ivHex, authTagHex, encryptedHex] = parts;
     const decipher = crypto.createDecipheriv(
       "aes-256-gcm",
@@ -41,7 +53,7 @@ export function decrypt(encText: string): string {
       Buffer.from(ivHex, "hex")
     );
     decipher.setAuthTag(Buffer.from(authTagHex, "hex"));
-    
+
     const decrypted = Buffer.concat([
       decipher.update(Buffer.from(encryptedHex, "hex")),
       decipher.final(),

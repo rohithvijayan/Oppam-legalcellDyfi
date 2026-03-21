@@ -107,7 +107,13 @@
     "adminNotesPlaceholder": "അന്വേഷണ കുറിപ്പുകൾ ഇവിടെ ചേർക്കുക...",
     "saveChanges": "മാറ്റങ്ങൾ സേവ് ചെയ്യുക",
     "evidenceLinks": "തെളിവ് ഫയലുകൾ",
-    "logout": "ലോഗൗട്ട്"
+    "logout": "ലോഗൗട്ട്",
+    "fetchError": "പരാതികൾ ശേഖരിക്കുന്നതിൽ പരാജയപ്പെട്ടു",
+    "networkError": "നെറ്റ്‌വർക്ക് തകരാർ",
+    "updateSuccess": "വിവരങ്ങൾ വിജയകരമായി അപ്‌ഡേറ്റ് ചെയ്തു",
+    "updateFailed": "അപ്‌ഡേറ്റ് പരാജയപ്പെട്ടു",
+    "loadMore": "കൂടുതൽ പരാതികൾ കാണുക",
+    "loading": "ശേഖരിക്കുന്നു..."
   },
   "footer": {
     "copyright": "© 2025 ഒപ്പം ലീഗൽ എയ്ഡ്. Protective. Professional. Empathetic.",

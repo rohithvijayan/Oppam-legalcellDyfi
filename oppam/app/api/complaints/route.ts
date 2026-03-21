@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAdminClient } from "@/lib/supabaseClient";
+import { getAdminClient } from "@/lib/supabaseAdmin";
 import { z } from "zod";
 import { encrypt } from "@/lib/crypto";
 import { sendEmail, getComplaintConfirmationEmail } from "@/lib/email";

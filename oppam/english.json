@@ -107,7 +107,13 @@
     "adminNotesPlaceholder": "Add investigation progress and other details regarding the request here...",
     "saveChanges": "Save Changes",
     "evidenceLinks": "Submitted Evidence",
-    "logout": "Logout"
+    "logout": "Logout",
+    "fetchError": "Failed to fetch complaints",
+    "networkError": "Network error occurred",
+    "updateSuccess": "Update successful",
+    "updateFailed": "Update failed",
+    "loadMore": "Load More Complaints",
+    "loading": "Loading..."
   },
   "footer": {
     "copyright": "Copyleft: Oppam Legal Advice 2026",

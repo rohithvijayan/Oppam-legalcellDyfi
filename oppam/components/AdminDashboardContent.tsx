@@ -37,11 +37,21 @@ export default function AdminDashboardContent() {
 
   const [complaints, setComplaints] = useState<Complaint[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [total, setTotal] = useState(0);
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
   const [newStatus, setNewStatus] = useState<string>("");
   const [adminNotes, setAdminNotes] = useState("");
   const [saving, setSaving] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+
+  const showToast = (message: string, type: "success" | "error") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const checkAuth = useCallback(async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -50,8 +60,10 @@ export default function AdminDashboardContent() {
     }
   }, [router]);
 
-  const fetchComplaints = useCallback(async () => {
-    setLoading(true);
+  const fetchComplaints = useCallback(async (isLoadMore = false) => {
+    if (isLoadMore) setLoadingMore(true);
+    else setLoading(true);
+
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
       router.replace("/admin");
@@ -59,18 +71,32 @@ export default function AdminDashboardContent() {
     }
 
     try {
-      const res = await fetch("/api/admin/complaints", {
+      const currentPage = isLoadMore ? page + 1 : 1;
+      const res = await fetch(`/api/admin/complaints?page=${currentPage}&limit=20`, {
         headers: { Authorization: `Bearer ${session.access_token}` },
       });
       if (res.ok) {
         const data = await res.json();
-        setComplaints(data);
+        if (isLoadMore) {
+          setComplaints(prev => [...prev, ...data.complaints]);
+          setPage(currentPage);
+        } else {
+          setComplaints(data.complaints);
+          setPage(1);
+        }
+        setTotal(data.total);
+        setHasMore(data.hasMore);
+      } else {
+        showToast(adm.fetchError, "error");
       }
     } catch (err) {
       console.error(err);
+      showToast(adm.networkError, "error");
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
     }
-    setLoading(false);
-  }, [router]);
+  }, [router, page, adm]);
 
   useEffect(() => {
     checkAuth();
@@ -91,7 +117,7 @@ export default function AdminDashboardContent() {
   const handleSave = async () => {
     if (!selectedComplaint) return;
     setSaving(true);
-    
+
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
       router.replace("/admin");
@@ -110,15 +136,18 @@ export default function AdminDashboardContent() {
       });
 
       if (res.ok) {
+        showToast(adm.updateSuccess, "success");
         await fetchComplaints();
         setSelectedComplaint(null);
       } else {
         console.error("Failed to update complaint via secure API");
+        showToast(adm.updateFailed, "error");
       }
     } catch (err) {
       console.error(err);
+      showToast(adm.networkError, "error");
     }
-    
+
     setSaving(false);
   };
 
@@ -127,12 +156,6 @@ export default function AdminDashboardContent() {
     if (data?.signedUrl) window.open(data.signedUrl, "_blank");
   };
 
-  // Stats
-  const total = complaints.length;
-  const pending = complaints.filter((c) => c.status === "PENDING").length;
-  const reviewed = complaints.filter((c) => c.status === "REVIEWED").length;
-  const actionTaken = complaints.filter((c) => c.status === "ACTION_TAKEN").length;
-
   const filtered = complaints.filter(
     (c) =>
       c.victim_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -140,15 +163,17 @@ export default function AdminDashboardContent() {
       c.contact_email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const statCards = [
-    { label: adm.statsTotal, value: total, icon: "folder_open", color: "text-on-surface" },
-    { label: adm.statsPending, value: pending, icon: "pending", color: "text-amber-600" },
-    { label: adm.statsReviewed, value: reviewed, icon: "fact_check", color: "text-blue-600" },
-    { label: adm.statsActionTaken, value: actionTaken, icon: "check_circle", color: "text-green-600" },
-  ];
-
   return (
     <div className="min-h-screen bg-surface-container-low p-4 md:p-8">
+      {/* Toast Notification */}
+      {toast && (
+        <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300 ${toast.type === "success" ? "bg-green-600 text-white" : "bg-red-600 text-white"
+          }`}>
+          <span className="material-symbols-outlined">{toast.type === "success" ? "check_circle" : "error"}</span>
+          <span className="font-bold text-sm tracking-wide uppercase">{toast.message}</span>
+        </div>
+      )}
+
       {/* Top bar */}
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -166,7 +191,12 @@ export default function AdminDashboardContent() {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {statCards.map((s) => (
+        {[
+          { label: adm.statsTotal, value: total, icon: "folder_open", color: "text-on-surface" },
+          { label: adm.statsPending, value: complaints.filter(c => c.status === "PENDING").length, icon: "pending", color: "text-amber-600" },
+          { label: adm.statsReviewed, value: complaints.filter(c => c.status === "REVIEWED").length, icon: "fact_check", color: "text-blue-600" },
+          { label: adm.statsActionTaken, value: complaints.filter(c => c.status === "ACTION_TAKEN").length, icon: "check_circle", color: "text-green-600" },
+        ].map((s) => (
           <div key={s.label} className="glass-card rounded-2xl p-5 shadow-sm border border-white/50">
             <div className="flex items-center justify-between mb-3">
               <span className={`material-symbols-outlined text-2xl ${s.color}`}>{s.icon}</span>
@@ -184,67 +214,85 @@ export default function AdminDashboardContent() {
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search by name, district, email..."
+          placeholder={adm.searchPlaceholder}
           className="w-full max-w-sm bg-white border-0 rounded-xl pl-11 pr-4 py-3 text-sm focus:ring-2 focus:ring-primary/30 focus:outline-none shadow-sm"
         />
       </div>
 
       {/* Table */}
-      <div className="glass-card rounded-2xl shadow-sm border border-white/50 overflow-hidden">
+      <div className="glass-card rounded-2xl shadow-sm border border-white/50 overflow-hidden mb-12">
         {loading ? (
           <div className="py-24 text-center text-on-surface-variant flex flex-col items-center gap-3">
             <span className="material-symbols-outlined text-4xl text-outline animate-spin" style={{ animationDuration: "1s" }}>progress_activity</span>
-            <p>Loading...</p>
+            <p>{adm.loading}</p>
           </div>
         ) : filtered.length === 0 ? (
           <div className="py-24 text-center text-on-surface-variant">
             <span className="material-symbols-outlined text-5xl text-outline block mb-3">inbox</span>
-            <p>No complaints found.</p>
+            <p>{adm.noComplaints}</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-outline-variant/30 bg-surface-container-lowest">
-                  <th className="text-left px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider">{adm.tableHeaders.id}</th>
-                  <th className="text-left px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider">{adm.tableHeaders.name}</th>
-                  <th className="text-left px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider hidden md:table-cell">{adm.tableHeaders.district}</th>
-                  <th className="text-left px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider hidden lg:table-cell">{adm.tableHeaders.date}</th>
-                  <th className="text-left px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider">{adm.tableHeaders.status}</th>
-                  <th className="text-right px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider">{adm.tableHeaders.action}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-outline-variant/20">
-                {filtered.map((c, i) => (
-                  <tr key={c.id} className="hover:bg-surface-container-low/50 transition-colors">
-                    <td className="px-6 py-4 text-on-surface-variant font-mono text-xs">{i + 1}</td>
-                    <td className="px-6 py-4">
-                      <div className="font-semibold text-on-surface">{c.victim_name}</div>
-                      <div className="text-xs text-on-surface-variant">{c.contact_email}</div>
-                    </td>
-                    <td className="px-6 py-4 text-on-surface-variant hidden md:table-cell">{c.location_district}</td>
-                    <td className="px-6 py-4 text-on-surface-variant text-xs hidden lg:table-cell">
-                      {new Date(c.created_at).toLocaleDateString("en-IN")}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border ${STATUS_COLORS[c.status]}`}>
-                        {adm.status[c.status]}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={() => openDetail(c)}
-                        className="inline-flex items-center gap-1.5 text-primary text-xs font-bold hover:underline"
-                      >
-                        <span className="material-symbols-outlined text-sm">open_in_new</span>
-                        {adm.viewDetails}
-                      </button>
-                    </td>
+          <>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-outline-variant/30 bg-surface-container-lowest">
+                    <th className="text-left px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider font-mono">Row</th>
+                    <th className="text-left px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider">{adm.tableHeaders.name}</th>
+                    <th className="text-left px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider hidden md:table-cell">{adm.tableHeaders.district}</th>
+                    <th className="text-left px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider hidden lg:table-cell">{adm.tableHeaders.date}</th>
+                    <th className="text-left px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider">{adm.tableHeaders.status}</th>
+                    <th className="text-right px-6 py-4 font-bold text-on-surface-variant uppercase text-xs tracking-wider">{adm.tableHeaders.action}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-outline-variant/20">
+                  {filtered.map((c, i) => (
+                    <tr key={c.id} className="hover:bg-surface-container-low/50 transition-colors">
+                      <td className="px-6 py-4 text-on-surface-variant font-mono text-xs">{i + 1}</td>
+                      <td className="px-6 py-4">
+                        <div className="font-semibold text-on-surface">{c.victim_name}</div>
+                        <div className="text-xs text-on-surface-variant">{c.contact_email}</div>
+                      </td>
+                      <td className="px-6 py-4 text-on-surface-variant hidden md:table-cell">{c.location_district}</td>
+                      <td className="px-6 py-4 text-on-surface-variant text-xs hidden lg:table-cell">
+                        {new Date(c.created_at).toLocaleDateString("en-IN")}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border ${STATUS_COLORS[c.status]}`}>
+                          {adm.status[c.status]}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <button
+                          onClick={() => openDetail(c)}
+                          className="inline-flex items-center gap-1.5 text-primary text-xs font-bold hover:underline"
+                        >
+                          <span className="material-symbols-outlined text-sm">open_in_new</span>
+                          {adm.viewDetails}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {hasMore && (
+              <div className="p-6 border-t border-outline-variant/20 flex justify-center">
+                <button
+                  onClick={() => fetchComplaints(true)}
+                  disabled={loadingMore}
+                  className="flex items-center gap-2 px-6 py-2.5 rounded-xl border border-primary text-primary text-sm font-bold hover:bg-primary/5 active:scale-95 transition-all disabled:opacity-50"
+                >
+                  {loadingMore ? (
+                    <span className="material-symbols-outlined animate-spin text-sm">progress_activity</span>
+                  ) : (
+                    <span className="material-symbols-outlined text-sm">expand_more</span>
+                  )}
+                  {loadingMore ? adm.loading : adm.loadMore}
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -337,11 +385,10 @@ export default function AdminDashboardContent() {
                     <button
                       key={s}
                       onClick={() => setNewStatus(s)}
-                      className={`px-4 py-2 rounded-full text-xs font-bold border transition-all ${
-                        newStatus === s
-                          ? STATUS_COLORS[s] + " shadow-sm"
-                          : "border-outline-variant text-on-surface-variant hover:border-primary"
-                      }`}
+                      className={`px-4 py-2 rounded-full text-xs font-bold border transition-all ${newStatus === s
+                        ? STATUS_COLORS[s] + " shadow-sm"
+                        : "border-outline-variant text-on-surface-variant hover:border-primary"
+                        }`}
                     >
                       {adm.status[s]}
                     </button>

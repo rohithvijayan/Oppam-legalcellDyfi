@@ -110,7 +110,15 @@ export const dictionaries = {
       adminNotesPlaceholder: "Add investigation progress and other details regarding the request here...",
       saveChanges: "Save Changes",
       evidenceLinks: "Submitted Evidence",
-      logout: "Logout"
+      logout: "Logout",
+      searchPlaceholder: "Search by name, district, email...",
+      noComplaints: "No complaints found.",
+      fetchError: "Failed to fetch complaints",
+      networkError: "Network error occurred",
+      updateSuccess: "Update successful",
+      updateFailed: "Update failed",
+      loadMore: "Load More Complaints",
+      loading: "Loading..."
     },
     footer: {
       copyright: "Copyleft: Oppam Legal Advice 2026",
@@ -246,7 +254,15 @@ export const dictionaries = {
       adminNotesPlaceholder: "പരാതിയുമായി ബന്ധപ്പെട്ട മറ്റ് വിവരങ്ങളും അന്വേഷണ പുരോഗതിയും ഇവിടെ ചേർക്കാം...",
       saveChanges: "മാറ്റങ്ങൾ സേവ് ചെയ്യുക",
       evidenceLinks: "സമർപ്പിക്കപ്പെട്ട തെളിവുകൾ",
-      logout: "ലോഗൗട്ട് ചെയ്യുക"
+      logout: "ലോഗൗട്ട് ചെയ്യുക",
+      searchPlaceholder: "പേര്, ജില്ല, ഇമെയിൽ എന്നിവ ഉപയോഗിച്ച് തിരയുക...",
+      noComplaints: "പരാതികൾ ഒന്നും തന്നെ ലഭിച്ചിട്ടില്ല.",
+      fetchError: "പരാതികൾ ശേഖരിക്കുന്നതിൽ പരാജയപ്പെട്ടു",
+      networkError: "നെറ്റ്‌വർക്ക് തകരാർ നേരിട്ടു",
+      updateSuccess: "വിവരങ്ങൾ വിജയകരമായി അപ്‌ഡേറ്റ് ചെയ്തു",
+      updateFailed: "അപ്‌ഡേറ്റ് പരാജയപ്പെട്ടു",
+      loadMore: "കൂടുതൽ പരാതികൾ കാണുക",
+      loading: "ശേഖരിക്കുന്നു..."
     },
     footer: {
       copyright: "പകർപ്പുപേക്ഷാപത്രം: ഒപ്പം നിയമോപദേശം 2026",
@@ -310,6 +326,8 @@ export interface Dictionary {
     viewDetails: string; updateStatus: string; close: string;
     status: { PENDING: string; REVIEWED: string; ACTION_TAKEN: string };
     adminNotes: string; adminNotesPlaceholder: string; saveChanges: string; evidenceLinks: string; logout: string;
+    searchPlaceholder: string; noComplaints: string; fetchError: string; networkError: string;
+    updateSuccess: string; updateFailed: string; loadMore: string; loading: string;
   };
   footer: { copyright: string; privacy: string; terms: string; contact: string };
   districts: readonly string[];
