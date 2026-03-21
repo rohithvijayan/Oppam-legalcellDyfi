@@ -163,13 +163,21 @@ export async function POST(req: NextRequest) {
     const adminEmailHtml = getAdminNotificationEmail(complaint_number, "PENDING", district);
 
     // Ensure emails are sent before finishing (vital for serverless functions)
-    console.log(`Sending confirmation email to victim: ${contact_email}`);
-    await sendEmail(contact_email, "Complaint Received - Oppam", emailHtml).catch(err => console.error("Victim email failed:", err));
+    console.log(`Attempting to send confirmation email to: ${contact_email}`);
+    const victimEmailStatus = await sendEmail(contact_email, "Complaint Received - Oppam", emailHtml).catch(err => {
+      console.error("Victim email transport error:", err);
+      return false;
+    });
+    console.log(`Victim email status: ${victimEmailStatus ? "SUCCESS" : "FAILED"}`);
 
     const adminEmail = process.env.ADMIN_EMAIL || process.env.GMAIL_USER;
     if (adminEmail) {
-      console.log(`Sending admin alert to: ${adminEmail}`);
-      await sendEmail(adminEmail, `New Complaint Alert: ${complaint_number}`, adminEmailHtml).catch(err => console.error("Admin email failed:", err));
+      console.log(`Attempting to send admin alert to: ${adminEmail}`);
+      const adminEmailStatus = await sendEmail(adminEmail, `New Complaint Alert: ${complaint_number}`, adminEmailHtml).catch(err => {
+        console.error("Admin email transport error:", err);
+        return false;
+      });
+      console.log(`Admin email status: ${adminEmailStatus ? "SUCCESS" : "FAILED"}`);
     }
 
     return NextResponse.json({ success: true, complaint_number }, { status: 201 });
