@@ -61,6 +61,7 @@ function ComplaintFormInner() {
     setStatus("submitting");
     try {
       const captcha_token = await executeRecaptcha("complaint_submission");
+      console.log("reCAPTCHA token generated successfully:", captcha_token ? "YES (length: " + captcha_token.length + ")" : "NO/EMPTY");
 
       // 1. Get signed URLs for direct upload
       const uploadedPaths: string[] = [];
