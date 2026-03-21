@@ -86,10 +86,15 @@ export async function POST(req: NextRequest) {
     } = parsed.data;
 
     // Handle evidence uploads
-    const evidenceFiles = formData.getAll("evidence") as File[];
     const evidenceUrls: string[] = [];
 
-    // Initialize admin client once for both storage uploads and DB insert
+    // 1. Collect pre-uploaded paths (for large files uploaded directly by client)
+    const preUploadedPaths = formData.getAll("evidence_paths") as string[];
+    evidenceUrls.push(...preUploadedPaths);
+
+    // 2. Handle direct uploads (legacy/small files)
+    const evidenceFiles = (formData.getAll("evidence") as unknown as (File | string)[]).filter(f => f instanceof File) as File[];
+
     const supabaseAdmin = getAdminClient();
 
     for (const file of evidenceFiles) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -62,13 +62,42 @@ function ComplaintFormInner() {
     try {
       const captcha_token = await executeRecaptcha("complaint_submission");
 
+      // 1. Get signed URLs for direct upload
+      const uploadedPaths: string[] = [];
+      if (evidenceFiles.length > 0) {
+        const urlRes = await fetch("/api/evidence/upload-url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            files: evidenceFiles.map(f => ({ name: f.name, type: f.type }))
+          })
+        });
+
+        if (!urlRes.ok) throw new Error("Failed to get upload URLs");
+        const { files: uploadInfos } = await urlRes.json();
+
+        // 2. Upload files directly to Supabase Storage
+        await Promise.all(uploadInfos.map(async (info: { uploadUrl: string; path: string }, index: number) => {
+          const file = evidenceFiles[index];
+          const uploadRes = await fetch(info.uploadUrl, {
+            method: "PUT",
+            body: file,
+            headers: { "Content-Type": file.type }
+          });
+          if (!uploadRes.ok) throw new Error(`Failed to upload ${file.name}`);
+          uploadedPaths.push(info.path);
+        }));
+      }
+
+      // 3. Submit the form with pre-uploaded paths
       const formData = new FormData();
       Object.entries(data).forEach(([k, v]) => formData.append(k, String(v)));
-      evidenceFiles.forEach(f => formData.append("evidence", f));
+      uploadedPaths.forEach(p => formData.append("evidence_paths", p));
       formData.append("captcha_token", captcha_token);
 
       const res = await fetch("/api/complaints", { method: "POST", body: formData });
-      if (!res.ok) throw new Error("Failed");
+      if (!res.ok) throw new Error("Failed to submit complaint");
+
       const json = await res.json();
       setComplaintNumber(json.complaint_number ?? null);
       fpixel.event("SubmitApplication");
@@ -80,7 +109,8 @@ function ComplaintFormInner() {
       setStatus("success");
       reset();
       setEvidenceFiles([]);
-    } catch {
+    } catch (err) {
+      console.error("Submission error:", err);
       setStatus("error");
     }
   };
@@ -300,4 +330,3 @@ export default function ComplaintForm() {
     </GoogleReCaptchaProvider>
   );
 }
-
