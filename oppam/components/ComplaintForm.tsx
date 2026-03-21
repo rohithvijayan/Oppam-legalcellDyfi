@@ -97,9 +97,14 @@ function ComplaintFormInner() {
       formData.append("captcha_token", captcha_token);
 
       const res = await fetch("/api/complaints", { method: "POST", body: formData });
-      if (!res.ok) throw new Error("Failed to submit complaint");
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        console.error("API Error Response:", errJson);
+        throw new Error(errJson.error || "Failed to submit complaint");
+      }
 
       const json = await res.json();
+      console.log("Submission Succeeded! Complaint Number:", json.complaint_number);
       setComplaintNumber(json.complaint_number ?? null);
       fpixel.event("SubmitApplication");
       gtag.event({

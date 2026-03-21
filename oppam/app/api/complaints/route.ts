@@ -162,14 +162,14 @@ export async function POST(req: NextRequest) {
     const emailHtml = getComplaintConfirmationEmail(victim_name, complaint_number);
     const adminEmailHtml = getAdminNotificationEmail(complaint_number, "PENDING", district);
 
-    // Fire and forget (don't block the response)
+    // Ensure emails are sent before finishing (vital for serverless functions)
     console.log(`Sending confirmation email to victim: ${contact_email}`);
-    sendEmail(contact_email, "Complaint Received - Oppam", emailHtml).catch(err => console.error("Victim email failed:", err));
+    await sendEmail(contact_email, "Complaint Received - Oppam", emailHtml).catch(err => console.error("Victim email failed:", err));
 
     const adminEmail = process.env.ADMIN_EMAIL || process.env.GMAIL_USER;
     if (adminEmail) {
       console.log(`Sending admin alert to: ${adminEmail}`);
-      sendEmail(adminEmail, `New Complaint Alert: ${complaint_number}`, adminEmailHtml).catch(err => console.error("Admin email failed:", err));
+      await sendEmail(adminEmail, `New Complaint Alert: ${complaint_number}`, adminEmailHtml).catch(err => console.error("Admin email failed:", err));
     }
 
     return NextResponse.json({ success: true, complaint_number }, { status: 201 });
