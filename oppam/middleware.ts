@@ -39,16 +39,7 @@ export async function middleware(req: NextRequest) {
             return NextResponse.redirect(new URL('/admin', req.url));
         }
 
-        // Verify admin email if configured
-        if (adminEmail && session.user.email !== adminEmail) {
-            console.error(`Unauthorized access attempt by ${session.user.email}`);
-            if (pathname.startsWith('/api')) {
-                return NextResponse.json({ error: "Forbidden: Not an admin" }, { status: 403 });
-            }
-            // For pages, we sign them out and redirect to login
-            await supabase.auth.signOut();
-            return NextResponse.redirect(new URL('/admin?error=unauthorized', req.url));
-        }
+        // Allowed any authenticated user to access admin (whitelist should be done in Supabase Auth settings)
     }
 
     return res;
