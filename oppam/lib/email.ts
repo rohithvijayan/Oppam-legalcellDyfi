@@ -40,16 +40,18 @@ export const getComplaintConfirmationEmail = (victimName: string, complaintNumbe
     <div style="font-family: 'Noto Sans Malayalam', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
       <h2 style="color: #cf0000;">പരാതി വിജയകരമായി സമർപ്പിച്ചു</h2>
       <p>പ്രിയ <strong>${victimName}</strong>,</p>
-      <p>നിങ്ങളുടെ പരാതി 'ഒപ്പം സൈബർ നീതി' സിസ്റ്റത്തിൽ തികച്ചും സുരക്ഷിതമായി രേഖപ്പെടുത്തിയിട്ടുണ്ട്.</p>
+      <p>​നിങ്ങളുടെ പരാതി 'ഒപ്പം' സംവിധാനത്തിൽ തികച്ചും സുരക്ഷിതമായി ലഭിച്ചിട്ടുണ്ട്. നിങ്ങളുടെ വിവരങ്ങൾ പൂർണമായും രഹസ്യമായി സൂക്ഷിക്കുന്നതാണ്.</p>
       <div style="background-color: #f9fafb; padding: 15px; border-radius: 8px; margin: 20px 0;">
         <p style="margin: 0; font-size: 14px; color: #6b7280;">നിങ്ങളുടെ ട്രാക്കിംഗ് നമ്പർ</p>
         <p style="margin: 5px 0 0 0; font-size: 24px; font-weight: bold; letter-spacing: 2px;">${complaintNumber}</p>
       </div>
-      <p>നിങ്ങളുടെ പരാതിയുടെ നിലവിലുള്ള അവസ്ഥ (Status) അറിയാൻ ഈ നമ്പർ എപ്പോൾ വേണമെങ്കിലും ഞങ്ങളുടെ പോർട്ടലിൽ ഉപയോഗിക്കാവുന്നതാണ്.</p>
+      <p>​അടുത്തതായി എന്ത് സംഭവിക്കും?</p>
+      <p>ഞങ്ങളുടെ നിയമവിദഗ്ധർ നിങ്ങളുടെ പരാതി പരിശോധിച്ച ശേഷം, തുടർനടപടികൾക്കായി ഉടൻ തന്നെ (അല്ലെങ്കിൽ 24 മണിക്കൂറിനുള്ളിൽ) നിങ്ങളെ ബന്ധപ്പെടുന്നതാണ്. അതുവരെ പരാതിയുടെ നിലവിലുള്ള അവസ്ഥ (Status) അറിയാൻ നിങ്ങളുടെ ട്രാക്കിംഗ് നമ്പർ എപ്പോൾ വേണമെങ്കിലും പോർട്ടലിൽ ഉപയോഗിക്കാവുന്നതാണ്.</p>
       <a href="https://oppam.online/track" style="display: inline-block; background-color: #cf0000; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; margin-top: 10px;">പരാതി ട്രാക്ക് ചെയ്യുക</a>
       <br/><br/>
-      <p style="font-size: 14px; color: #6b7280;">ധൈര്യമായിരിക്കുക. ഈ നിയമപോരാട്ടത്തിൽ ഞങ്ങൾ പൂർണ്ണമായും നിങ്ങൾക്കൊപ്പമുണ്ട്.</p>
-      <p style="font-size: 14px; color: #6b7280;"><strong>- ഒപ്പം ലീഗൽ ടീം</strong></p>
+      <p style="font-size: 14px; color: #6b7280;">​ധൈര്യമായിരിക്കുക. നിങ്ങൾക്ക് ആവശ്യമായ എല്ലാ നിയമസഹായങ്ങളുമായി ഞങ്ങൾ ഒപ്പമുണ്ട്.</p>
+      <p style="font-size: 14px; color: #6b7280;"><strong>സ്നേഹത്തോടെ</strong></p>
+      <p style="font-size: 14px; color: #6b7280;"><strong>ടീം ഒപ്പം</strong></p>
     </div>
   `;
 };

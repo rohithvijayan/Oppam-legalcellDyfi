@@ -190,7 +190,7 @@ export async function POST(req: NextRequest) {
 
     // Ensure emails are sent before finishing (vital for serverless functions)
     console.log(`Attempting to send confirmation email to: ${contact_email}`);
-    const victimEmailStatus = await sendEmail(contact_email, "Complaint Received - Oppam", emailHtml).catch(err => {
+    const victimEmailStatus = await sendEmail(contact_email, "സ്ഥിരീകരണം: നിങ്ങളുടെ പരാതി 'ഒപ്പം' പോർട്ടലിൽ ലഭിച്ചിട്ടുണ്ട്", emailHtml).catch(err => {
       console.error("Victim email transport error:", err);
       return false;
     });
