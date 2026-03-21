@@ -46,13 +46,10 @@ export const getComplaintConfirmationEmail = (victimName: string, complaintNumbe
         <p style="margin: 5px 0 0 0; font-size: 24px; font-weight: bold; letter-spacing: 2px;">${complaintNumber}</p>
       </div>
       <p>​അടുത്തതായി എന്ത് സംഭവിക്കും?</p>
-      <p>ഞങ്ങളുടെ നിയമവിദഗ്ധർ നിങ്ങളുടെ പരാതി പരിശോധിച്ച ശേഷം, തുടർനടപടികൾക്കായി ഉടൻ തന്നെ (അല്ലെങ്കിൽ 24 മണിക്കൂറിനുള്ളിൽ) നിങ്ങളെ ബന്ധപ്പെടുന്നതാണ്. അതുവരെ പരാതിയുടെ നിലവിലുള്ള അവസ്ഥ (Status) അറിയാൻ നിങ്ങളുടെ ട്രാക്കിംഗ് നമ്പർ എപ്പോൾ വേണമെങ്കിലും പോർട്ടലിൽ ഉപയോഗിക്കാവുന്നതാണ്.</p>
-      <a href="https://oppam.online/track" style="display: inline-block; background-color: #cf0000; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; margin-top: 10px;">പരാതി ട്രാക്ക് ചെയ്യുക</a>
+      <p>ഞങ്ങളുടെ നിയമവിദഗ്ധർ നിങ്ങളുടെ പരാതി പരിശോധിച്ച ശേഷം, തുടർനടപടികൾക്കായി ഉടൻ തന്നെ (അല്ലെങ്കിൽ 24 മണിക്കൂറിനുള്ളിൽ) നിങ്ങളെ ബന്ധപ്പെടുന്നതാണ്. അതുവരെ പരാതിയുടെ നിലവിലുള്ള അവസ്ഥ (Status) അറിയാൻ നിങ്ങളുടെ ട്രാക്കിംഗ് നമ്പർ ഉപയോഗിച്ച് <strong>oppam.online</strong> വെബ്സൈറ്റിലെ ട്രാക്കിംഗ് ഫീച്ചർ (Track feature) ഉപയോഗിക്കാവുന്നതാണ്.</p>
       <br/><br/>
-      <p style="font-size: 14px; color: #6b7280;">​സൈബർ അതിക്രമങ്ങൾക്കെതിരെയുള്ള നിയമപോരാട്ടത്തിൽ ഞങ്ങൾ നിങ്ങൾക്കൊപ്പമുണ്ട്. നിങ്ങൾക്ക് ആവശ്യമായ എല്ലാ നിയമസഹായങ്ങളുമായി ടീം ഒപ്പം മുൻപിലുണ്ടാകും.</p>
-      <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; font-size: 12px; color: #9ca3af;">
-        <p>ഈ സന്ദേശം 'ഒപ്പം' (Oppam) ലീഗൽ സപ്പോർട്ട് പോർട്ടലിൽ നിന്നുള്ളതാണ്. ഇത് ഒരു ഓട്ടോമേറ്റഡ് മെയിൽ ആയതിനാൽ ഇതിലേക്ക് മറുപടി അയക്കേണ്ടതില്ല.</p>
-      </div>
+      <p style="font-size: 14px; color: #6b7280;">​ധൈര്യമായിരിക്കുക. നിങ്ങൾക്ക് ആവശ്യമായ എല്ലാ നിയമസഹായങ്ങളുമായി ഞങ്ങൾ ഒപ്പമുണ്ട്.</p>
+      <p style="font-size: 14px; color: #6b7280;"><strong>സ്നേഹത്തോടെ,</strong><br/>സ്നേഹത്തോടെ</p>
       <p style="font-size: 14px; color: #6b7280;"><strong>സ്നേഹത്തോടെ,</strong><br/>ടീം ഒപ്പം</p>
     </div>
   `;
